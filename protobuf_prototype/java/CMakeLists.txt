@@ -8,7 +8,7 @@ get_filename_component(JAVA_BIN ${Java_JAVA_EXECUTABLE} DIRECTORY)
 get_filename_component(JAVA_HOME ${JAVA_BIN} DIRECTORY)
 
 # Update the class path.
-set(CMAKE_JAVA_INCLUDE_PATH ${JAVA_HOME}/lib/tools.jar:/usr/local/lib/protobuf/protobuf.jar)
+set(CMAKE_JAVA_INCLUDE_PATH ${JAVA_HOME}/lib/tools.jar:/usr/local/lib/protobuf-java-3.1.0.jar)
 
 # Compile and jar the classes.
 file(GLOB_RECURSE JAVA_SOURCES "*.java")
