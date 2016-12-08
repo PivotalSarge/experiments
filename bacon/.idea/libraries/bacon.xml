@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bacon">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/bacon_jar/bacon.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
