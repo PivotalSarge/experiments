@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="bacon:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/bacon_jar</output-path>
+    <root id="archive" name="bacon.jar">
+      <element id="module-output" name="bacon" />
+    </root>
+  </artifact>
+</component>

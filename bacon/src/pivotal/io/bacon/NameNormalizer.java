@@ -27,8 +27,7 @@ public class NameNormalizer {
                 builder.append(" ");
                 builder.append(matcher.group(3));
             }
-        }
-        else {
+        } else {
             matcher = commaPattern.matcher(str);
             if (matcher.matches()) {
                 builder.append(matcher.group(1));
@@ -38,8 +37,7 @@ public class NameNormalizer {
                     builder.append(" ");
                     builder.append(matcher.group(3));
                 }
-            }
-            else {
+            } else {
                 builder.append(str);
             }
         }
