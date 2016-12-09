@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="bacon:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="4e9e47b3-380f-4216-b4bd-05f248b382c9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -19,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BaconNumber.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BaconNumber.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/BaconNumber.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="65" column="30" lean-forward="false" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
+            <state relative-caret-position="436">
+              <caret line="57" column="22" lean-forward="false" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#428#439#0" expanded="true" />
@@ -33,7 +38,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TitleNormalizer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TitleNormalizer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/TitleNormalizer.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
@@ -94,10 +99,10 @@
         <option value="$PROJECT_DIR$/src/pivotal/io/bacon/Movie.java" />
         <option value="$PROJECT_DIR$/src/pivotal/io/bacon/BaconPath.java" />
         <option value="$PROJECT_DIR$/src/pivotal/io/bacon/heap/ActorDatabase.java" />
-        <option value="$PROJECT_DIR$/src/pivotal/io/bacon/FileLoader.java" />
         <option value="$PROJECT_DIR$/tiny.list" />
-        <option value="$PROJECT_DIR$/src/pivotal/io/bacon/BaconNumber.java" />
         <option value="$PROJECT_DIR$/src/pivotal/io/bacon/TitleNormalizer.java" />
+        <option value="$PROJECT_DIR$/src/pivotal/io/bacon/FileLoader.java" />
+        <option value="$PROJECT_DIR$/src/pivotal/io/bacon/BaconNumber.java" />
       </list>
     </option>
   </component>
@@ -710,16 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/FileLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="29" column="21" lean-forward="true" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/BaconPath.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
@@ -739,18 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/BaconNumber.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="65" column="30" lean-forward="false" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#428#439#0" expanded="true" />
-            <element signature="e#491#502#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/NameNormalizer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -767,6 +750,28 @@
           <caret line="8" column="30" lean-forward="true" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/FileLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pivotal/io/bacon/BaconNumber.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="57" column="22" lean-forward="false" selection-start-line="57" selection-start-column="22" selection-end-line="57" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#428#439#0" expanded="true" />
+            <element signature="e#491#502#0" expanded="true" />
           </folding>
         </state>
       </provider>
