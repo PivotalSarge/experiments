@@ -38,17 +38,22 @@ public class BaconNumber {
 
     void doOne() {
         BaconPath baconPath = working.remove();
+        //System.out.println("\n\nbaconPath=" + baconPath);
         Actor next = baconPath.getLast();
-        System.out.println(next + (examined.contains(next) ? " has " : " has NOT ") + "been examined");
+        //System.out.println("Next: " + next + (examined.contains(next) ? " has " : " has NOT ") + "been examined");
         if (!examined.contains(next)) {
-            examined.add(next);
-
-            System.out.println(next.getMovies().size());
+            //System.out.println("next.getMovies().size()=" + next.getMovies().size());
             for (Movie movie : next.getMovies()) {
+                //System.out.println("1: " + movie + ":\t" + movie.getActors());
                 for (Actor actor : movie.getActors()) {
-                    if (!examined.contains(actor)) {
+                    //System.out.println(actor.getMovies().size() + "\t" + actor);
+                    //System.out.println("Candidate: " + actor + (examined.contains(actor) ? " has " : " has NOT ") + "been examined");
+                    if (!next.equals(actor)) {
                         BaconPath candidate = create(baconPath, movie, actor);
+                        //System.out.println("candidate=" + candidate);
+                        //System.out.println("two=" + two);
                         if (one.equals(candidate.getFirst()) && two.equals(candidate.getLast())) {
+                            //System.out.println("MATCH!");
                             if (!baconPaths.isEmpty() && candidate.size() < baconPaths.get(0).size()) {
                                 baconPaths.clear();
                             }
@@ -56,10 +61,15 @@ public class BaconNumber {
                             if (baconPaths.isEmpty() || candidate.size() == baconPaths.get(0).size()) {
                                 baconPaths.add(candidate);
                             }
+                        } else {
+                            working.add(candidate);
+                            //System.out.println("working.size()=" + working.size());
                         }
                     }
                 }
             }
+
+            examined.add(next);
         }
     }
 
@@ -77,9 +87,9 @@ public class BaconNumber {
 
     public int cardinality() {
         if (!baconPaths.isEmpty()) {
-            return baconPaths.get(0).size();
+            return baconPaths.get(0).size() - 1;
         }
-        return 0;
+        return -1;
     }
 
     public String toString() {
@@ -91,10 +101,14 @@ public class BaconNumber {
         Arrays.fill(chars, '=');
         builder.append(new String(chars));
         builder.append("\n");
-        builder.append("Bacon number: " + cardinality());
-        for (BaconPath baconPath : baconPaths) {
-            builder.append("\n");
-            builder.append(baconPath.toString());
+        if (baconPaths.isEmpty()) {
+            builder.append("Bacon number: N/A");
+        } else {
+            builder.append("Bacon number: " + cardinality());
+            for (BaconPath baconPath : baconPaths) {
+                builder.append("\n");
+                builder.append(baconPath.toString());
+            }
         }
 
         return builder.toString();

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * Created by mdodge on 08/12/2016.
  */
 public class TitleNormalizer {
-    final static Pattern pattern = Pattern.compile("(.*(?: \\(\\d+\\)?)).*");
+    final static Pattern pattern = Pattern.compile("(.*(?: \\(\\d+(?:/[CDILMVX]+)?\\)?)).*");
 
     public TitleNormalizer() {
         // NOP

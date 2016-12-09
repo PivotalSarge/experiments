@@ -19,24 +19,32 @@ public class FileLoader {
             Actor actor = null;
             String line = null;
             while ((line = reader.readLine()) != null) {
+                //System.out.println("actor=" + actor);
+                //System.out.println(line);
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.matches() && 2 <= matcher.groupCount()) {
                     String name = nameNormalizer.normalize(matcher.group(1));
-                    String title = titleNormalizer.normalize(matcher.group(2));
+                    //System.out.println("name=" + name);
+                    if (name != null && !name.isEmpty()) {
+                        actor = actorDatabase.get(name);
+                    }
                     // Restrict to movies.
-                    if (!title.isEmpty() && '"' != title.charAt(0)) {
-                        if (name != null && !name.isEmpty()) {
-                            actor = actorDatabase.get(name);
-                        }
+                    if (!matcher.group(2).isEmpty()
+                            && !matcher.group(2).contains("(TV)")
+                            && !matcher.group(2).contains("(V)")) {
+                        String title = titleNormalizer.normalize(matcher.group(2));
                         Movie movie = movieDatabase.get(title);
                         if (actor != null && movie != null) {
                             movie.addActor(actor);
                             actor.addMovie(movie);
-//                            if (1 < movie.getActors().size()) {
-//                                System.out.println(movie + ": " + movie.getActors());
-//                            }
+                            //System.out.println(actor.getMovies().size() + "\t" + movie.getActors().size());
                         }
+                        //System.out.println("0: " + movie + ":\t" + movie.getActors());
                     }
+                    //else System.out.println(matcher.group(2) + " is a TV show");
+                }
+                else {
+                    actor = null;
                 }
             }
         } catch (IOException io) {
