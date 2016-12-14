@@ -5,6 +5,13 @@ package pivotal.io.bacon;
  */
 public interface ActorDatabase {
     /**
+     * Determines the number of actors in the database.
+     *
+     * @return Number of actors in the database.
+     */
+    public int size();
+
+    /**
      * Gets the actor for the name from the database.
      * Creates the actor in the database if necessary.
      *

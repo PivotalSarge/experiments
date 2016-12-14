@@ -15,6 +15,15 @@ public class MovieDatabase implements pivotal.io.bacon.MovieDatabase {
     Map<String, Movie> movies = new HashMap<String, Movie>();
 
     /**
+     * Determines the number of movies in the database.
+     *
+     * @return Number of movies in the database.
+     */
+    public int size() {
+        return movies.size();
+    }
+
+    /**
      * Gets the movie for the title from the database.
      * Creates the movie in the database if necessary.
      *

@@ -2,11 +2,11 @@ package pivotal.io.bacon;
 
 import java.io.IOException;
 
-import pivotal.io.bacon.heap.ActorDatabase;
-import pivotal.io.bacon.heap.MovieDatabase;
 import pivotal.io.bacon.http.Server;
 
 public class Main {
+    private static final String PREFIX = "pivotal.io.bacon.";
+
     public static void main(String[] args) {
         if (0 == args.length) {
             System.out.println("Starting server...");
@@ -14,21 +14,33 @@ public class Main {
                 Server server = new Server(8000);
                 server.start();
             } catch (IOException io) {
-                io.printStackTrace();
+                io.printStackTrace(System.err);
             }
         } else {
-            ActorDatabase actorDatabase = new ActorDatabase();
-            MovieDatabase movieDatabase = new MovieDatabase();
-
-            FileLoader fileLoader = new FileLoader();
-            fileLoader.load("/Users/mdodge/experiments/bacon/tiny.list", actorDatabase, movieDatabase);
-
-            NameNormalizer normalizer = new NameNormalizer();
-            for (String arg : args) {
-                System.out.println();
-                arg = normalizer.normalize(arg);
-                BaconNumber baconNumber = new BaconNumber(actorDatabase, movieDatabase, Actor.KEVIN_BACON, arg);
-                System.out.println(baconNumber);
+            String className = System.getProperty("bacon.calculator", "heap.SerialBaconNumberCalculator");
+            if (!className.startsWith(PREFIX)) {
+                className = PREFIX + className;
+            }
+            try {
+                Class<BaconNumberCalculator> clazz = (Class<BaconNumberCalculator>) Class.forName(className);
+                if (clazz != null) {
+                    BaconNumberCalculator calculator = clazz.newInstance();
+                    if (calculator != null) {
+                        for (String arg : args) {
+                            System.out.println();
+                            System.out.println(arg);
+                            BaconNumber baconNumber = calculator.calculate(Actor.KEVIN_BACON, arg);
+                            System.out.println(baconNumber);
+                        }
+                    } else {
+                        System.err.println("No instance for " + className);
+                    }
+                } else {
+                    System.err.println("No class for " + className);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace(System.err);
             }
         }
     }

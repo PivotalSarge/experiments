@@ -10,11 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pivotal.io.bacon.Actor;
-import pivotal.io.bacon.ActorDatabase;
 import pivotal.io.bacon.BaconNumber;
-import pivotal.io.bacon.FileLoader;
-import pivotal.io.bacon.MovieDatabase;
-import pivotal.io.bacon.NameNormalizer;
+import pivotal.io.bacon.BaconNumberCalculator;
+import pivotal.io.bacon.heap.SerialBaconNumberCalculator;
 
 //import java.io.InputStream;
 
@@ -22,16 +20,10 @@ import pivotal.io.bacon.NameNormalizer;
  * Created by mdodge on 07/12/2016.
  */
 public class BaconHandler implements HttpHandler {
-    ActorDatabase actorDatabase;
-
-    MovieDatabase movieDatabase;
+    BaconNumberCalculator calculator = new SerialBaconNumberCalculator();
 
     BaconHandler(String path) {
-        pivotal.io.bacon.heap.ActorDatabase actorDatabase = new pivotal.io.bacon.heap.ActorDatabase();
-        pivotal.io.bacon.heap.MovieDatabase movieDatabase = new pivotal.io.bacon.heap.MovieDatabase();
-        NameNormalizer normalizer = new NameNormalizer();
-        FileLoader fileLoader = new FileLoader();
-        fileLoader.load("tiny.list", actorDatabase, movieDatabase);
+        // NOP
     }
 
     public void handle(HttpExchange t) throws IOException {
@@ -53,7 +45,7 @@ public class BaconHandler implements HttpHandler {
             }
             response += "\nname=";
             response += query.get("name");
-            BaconNumber baconNumber = new BaconNumber(actorDatabase, movieDatabase, Actor.KEVIN_BACON, query.get("name"));
+            BaconNumber baconNumber = calculator.calculate(Actor.KEVIN_BACON, query.get("name"));
             response += "\ncardinality=" + baconNumber.cardinality();
         } else {
             response = "<html><body><strong>No name provided.</strong></body></html>";
