@@ -39,10 +39,6 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 //        System.out.println("movieDatabase.size()=" + movieDatabase.size());
     }
 
-    protected void clearCount() {
-        count.set(0);
-    }
-
     protected void incrementCount() {
         count.incrementAndGet();
 //        System.out.println("+: " + count);
@@ -58,18 +54,17 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
         }
     }
 
-    public void calculate(BaconNumber baconNumber) {
-        clearCount();
+    public synchronized void calculate(BaconNumber baconNumber) {
+        count.set(0);
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
 
         setUp(baconNumber);
 
-        synchronized (this) {
-            while (!working.isEmpty() || 0 < count.get()) {
-//            System.out.println("isEmpty=" + working.isEmpty() + "\tcount=" + count);
-                progress(baconNumber);
-            }
+        while (!working.isEmpty() || 0 < count.get()) {
+//          System.out.println("0: isEmpty=" + working.isEmpty() + "\tcount=" + count);
+            progress(baconNumber);
+//          System.out.println("1: isEmpty=" + working.isEmpty() + "\tcount=" + count);
         }
 
         tearDown();

@@ -18,24 +18,6 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
         // NOP
     }
 
-    public void calculate(BaconNumber baconNumber) {
-        clearCount();
-
-        working.enqueue(new BaconPath(baconNumber.getFirst()));
-
-        setUp(baconNumber);
-
-        while (!working.isEmpty() || 0 < count.get()) {
-//          System.out.println("0: isEmpty=" + working.isEmpty() + "\tcount=" + count);
-            progress(baconNumber);
-//          System.out.println("1: isEmpty=" + working.isEmpty() + "\tcount=" + count);
-        }
-
-        tearDown();
-
-        update(baconNumber, matches);
-    }
-
     protected void setUp(BaconNumber baconNumber) {
         executors.clear();
         for (int i = 0; i < NUMBER_OF_THREADS; ++i) {

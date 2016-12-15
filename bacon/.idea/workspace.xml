@@ -8,7 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4e9e47b3-380f-4216-b4bd-05f248b382c9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/BaconPathQueue.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/BaconPathQueue.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" />
     </list>
@@ -29,42 +28,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ParallelBaconNumberCalculator.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ParallelBaconNumberCalculator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+            <state relative-caret-position="15">
+              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#398#430#0" expanded="true" />
-                <element signature="e#620#630#0" expanded="true" />
+                <element signature="e#377#387#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SerialBaconNumberCalculator.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SerialBaconNumberCalculator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-494">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+            <state relative-caret-position="180">
+              <caret line="56" column="29" lean-forward="false" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1214#1215#0" expanded="true" />
-                <element signature="e#1239#1240#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaconPathQueue.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/BaconPathQueue.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
-              <caret line="35" column="31" lean-forward="false" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#339#350#0" expanded="true" />
+                <element signature="e#2360#2361#0" expanded="true" />
+                <element signature="e#2402#2403#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -130,10 +115,10 @@
         <option value="$PROJECT_DIR$/src/io/pivotal/bacon/BaconPathQueue.java" />
         <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/Executor.java" />
         <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/PooledBaconNumberCalculator.java" />
-        <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" />
         <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/BaconPathQueue.java" />
-        <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" />
         <option value="$PROJECT_DIR$/src/io/pivotal/bacon/Main.java" />
+        <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" />
+        <option value="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" />
       </list>
     </option>
   </component>
@@ -625,7 +610,14 @@
       <option name="project" value="LOCAL" />
       <updated>1481816195058</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Refactor body of calculate loop.">
+      <created>1481840959070</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1481840959070</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -697,7 +689,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Switch to bespoke work queue." />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch to bespoke work queue." />
+    <MESSAGE value="Refactor body of calculate loop." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor body of calculate loop." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -713,7 +706,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -797,7 +790,7 @@
         <state relative-caret-position="330">
           <caret line="24" column="12" lean-forward="false" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
             <element signature="e#525#526#0" expanded="false" />
             <element signature="e#553#554#0" expanded="false" />
           </folding>
@@ -809,7 +802,7 @@
         <state relative-caret-position="460">
           <caret line="46" column="20" lean-forward="true" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
             <element signature="e#202#215#0" expanded="false" />
           </folding>
         </state>
@@ -820,7 +813,7 @@
         <state relative-caret-position="120">
           <caret line="8" column="30" lean-forward="true" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -877,7 +870,7 @@
         <state relative-caret-position="345">
           <caret line="26" column="12" lean-forward="false" selection-start-line="26" selection-start-column="12" selection-end-line="26" selection-end-column="12" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -897,7 +890,7 @@
         <state relative-caret-position="76">
           <caret line="9" column="106" lean-forward="false" selection-start-line="9" selection-start-column="79" selection-end-line="9" selection-end-column="106" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -907,7 +900,7 @@
         <state relative-caret-position="165">
           <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -949,16 +942,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/BaconNumberCalculator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="33" column="77" lean-forward="false" selection-start-line="33" selection-start-column="77" selection-end-line="33" selection-end-column="77" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/Executor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -980,7 +963,7 @@
         <state relative-caret-position="285">
           <caret line="46" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -992,18 +975,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#339#350#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-494">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1214#1215#0" expanded="true" />
-            <element signature="e#1239#1240#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1020,12 +991,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+        <state relative-caret-position="15">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#398#430#0" expanded="true" />
-            <element signature="e#620#630#0" expanded="true" />
+            <element signature="e#377#387#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/BaconNumberCalculator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="33" column="77" lean-forward="false" selection-start-line="33" selection-start-column="77" selection-end-line="33" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="56" column="29" lean-forward="false" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2360#2361#0" expanded="true" />
+            <element signature="e#2402#2403#0" expanded="true" />
           </folding>
         </state>
       </provider>
