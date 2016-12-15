@@ -23,11 +23,13 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
         // Is it strictly accurate to add one for 'two'?
         while (examined.size() + 1 < actorDatabase.size()) {
             try {
+//                System.out.println("Sleeping...");
                 Thread.currentThread().sleep(100);
             } catch (InterruptedException ie) {
                 // NOP
             }
         }
+//        System.out.println("Shutting down...");
         try {
             pool.shutdown();
             pool.awaitTermination(5, TimeUnit.SECONDS);
@@ -36,6 +38,7 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
         } finally {
             pool.shutdownNow();
         }
+        update(baconNumber, matches);
     }
 
     class Task implements Runnable {
@@ -44,7 +47,11 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
         BaconPath baconPath;
 
         Task(BaconNumber baconNumber, BaconPath baconPath) {
-            this.baconNumber = baconNumber; this.baconPath = baconPath;
+//            System.out.println("first=" + baconNumber.getFirst());
+//            System.out.println("last=" + baconNumber.getLast());
+            this.baconNumber = baconNumber;
+//            System.out.println("baconPath=" + baconPath);
+            this.baconPath = baconPath;
         }
 
         public void run() {
