@@ -42,6 +42,10 @@ public class BaconNumber {
         return -1;
     }
 
+    void setMatches(List<BaconPath> matches) {
+        this.matches = matches;
+    }
+
     public String toString() {
         StringBuilder builder = new StringBuilder();
         String caption = "From " + first + " to " + last;

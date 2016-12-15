@@ -32,6 +32,10 @@ public abstract class BaconNumberCalculator {
 
     protected abstract void calculate(BaconNumber baconNumber);
 
+    protected void update(BaconNumber baconNumber, List<BaconPath> matches) {
+        baconNumber.setMatches(matches);
+    }
+
     protected BaconPath create(BaconPath baconPath, Movie movie, Actor actor) {
         try {
             BaconPath candidate = (BaconPath) baconPath.clone();
@@ -39,7 +43,7 @@ public abstract class BaconNumberCalculator {
             return candidate;
         } catch (CloneNotSupportedException cnse) {
             System.err.println(cnse.getMessage());
-            cnse.printStackTrace();
+            cnse.printStackTrace(System.err);
         }
         return null;
     }

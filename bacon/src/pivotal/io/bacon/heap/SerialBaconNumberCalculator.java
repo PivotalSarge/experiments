@@ -28,6 +28,8 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 
         FileLoader fileLoader = new FileLoader();
         fileLoader.load("/Users/mdodge/experiments/bacon/tiny.list", actorDatabase, movieDatabase);
+//        System.out.println("actorDatabase.size()=" + actorDatabase.size());
+//        System.out.println("movieDatabase.size()=" + movieDatabase.size());
     }
 
     public void calculate(BaconNumber baconNumber) {
@@ -37,29 +39,30 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
             List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
             working.addAll(candidates);
         }
+        update(baconNumber, matches);
     }
 
     protected List<BaconPath> analyzeCandidate(BaconNumber baconNumber, BaconPath baconPath) {
         List<BaconPath> candidates = new LinkedList<BaconPath>();
 
-        //System.out.println("\n\nbaconPath=" + baconPath);
+//        System.out.println("\n\nbaconPath=" + baconPath);
         Actor next = baconPath.getLast();
-        //System.out.println("Next: " + next + (examined.contains(next) ? " has " : " has NOT ") + "been examined");
+//        System.out.println("Next: " + next + (examined.contains(next) ? " has " : " has NOT ") + "been examined");
         if (!examined.contains(next)) {
             examined.add(next);
-            //System.out.println("next.getMovies().size()=" + next.getMovies().size());
+//            System.out.println("next.getMovies().size()=" + next.getMovies().size());
             for (Movie movie : next.getMovies()) {
-                //System.out.println("1: " + movie + ":\t" + movie.getActors());
+//                System.out.println("1: " + movie + ":\t" + movie.getActors());
                 for (Actor actor : movie.getActors()) {
-                    //System.out.println(actor.getMovies().size() + "\t" + actor);
-                    //System.out.println("Candidate: " + actor + (examined.contains(actor) ? " has " : " has NOT ") + "been examined");
+//                    System.out.println(actor.getMovies().size() + "\t" + actor);
+//                    System.out.println("Candidate: " + actor + (examined.contains(actor) ? " has " : " has NOT ") + "been examined");
                     if (!next.equals(actor)) {
                         BaconPath candidate = create(baconPath, movie, actor);
-                        //System.out.println("candidate=" + candidate);
-                        //System.out.println("two=" + two);
+//                        System.out.println("candidate=" + candidate);
+//                        System.out.println("last=" + baconNumber.getLast());
                         if (baconNumber.getFirst().equals(candidate.getFirst())
                                 && baconNumber.getLast().equals(candidate.getLast())) {
-                            //System.out.println("MATCH!");
+//                            System.out.println("MATCH!");
                             if (!matches.isEmpty() && candidate.size() < matches.get(0).size()) {
                                 matches.clear();
                             }
@@ -69,7 +72,7 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
                             }
                         } else {
                             candidates.add(candidate);
-                            //System.out.println("working.size()=" + working.size());
+//                            System.out.println("working.size()=" + working.size());
                         }
                     }
                 }
