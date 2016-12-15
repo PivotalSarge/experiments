@@ -37,7 +37,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         fileLoader.load("/Users/mdodge/experiments/bacon/tiny.list", actorDatabase, movieDatabase);
     }
 
-    public synchronized void calculate(BaconNumber baconNumber) {
+    protected synchronized void calculate(BaconNumber baconNumber) {
         this.baconNumber = baconNumber;
 
         count.set(0);
