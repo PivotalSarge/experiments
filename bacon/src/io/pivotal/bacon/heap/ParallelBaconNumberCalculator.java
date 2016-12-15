@@ -24,7 +24,7 @@ public class ParallelBaconNumberCalculator extends QueuedBaconNumberCalculator {
         for (int i = 0; i < NUMBER_OF_THREADS; ++i) {
             Executor executor = new Executor("Executor " + i);
             executors.add(executor);
-            new Thread(executor).start();
+            executor.start();
         }
     }
 
@@ -41,10 +41,11 @@ public class ParallelBaconNumberCalculator extends QueuedBaconNumberCalculator {
     protected void tearDown() {
         for (Executor executor : executors) {
             executor.done = true;
+            executor.interrupt();
         }
     }
 
-    class Executor implements Runnable {
+    class Executor extends Thread {
         final String name;
 
         volatile boolean done = false;
