@@ -44,10 +44,10 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
 
-        setUp(baconNumber);
+        setUp();
 
         while (!working.isEmpty() || 0 < count.get()) {
-            progress(baconNumber);
+            progress();
         }
 
         tearDown();
@@ -55,11 +55,11 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         update(baconNumber, matches);
     }
 
-    protected void setUp(BaconNumber baconNumber) {
+    protected void setUp() {
         // NOP
     }
 
-    protected void progress(BaconNumber baconNumber) {
+    protected void progress() {
         // NOP
     }
 
@@ -67,12 +67,12 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         // NOP
     }
 
-    protected void calculateNext(BaconNumber baconNumber) {
+    protected void calculateNext() {
         BaconPath baconPath = working.dequeue();
         if (baconPath != null) {
             count.incrementAndGet();
 
-            for (BaconPath candidate : analyzeCandidates(baconNumber, baconPath)) {
+            for (BaconPath candidate : analyzeCandidates(baconPath)) {
                 working.enqueue(candidate);
             }
 
@@ -85,7 +85,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         }
     }
 
-    private List<BaconPath> analyzeCandidates(BaconNumber baconNumber, BaconPath baconPath) {
+    private List<BaconPath> analyzeCandidates(BaconPath baconPath) {
         List<BaconPath> candidates = new LinkedList<BaconPath>();
 
         Actor next = baconPath.getLast();
@@ -94,7 +94,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
             for (Movie movie : next.getMovies()) {
                 for (Actor actor : movie.getActors()) {
                     if (!next.equals(actor)) {
-                        analyzeCandidate(baconNumber, candidates, create(baconPath, movie, actor));
+                        analyzeCandidate(candidates, create(baconPath, movie, actor));
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         return candidates;
     }
 
-    private void analyzeCandidate(BaconNumber baconNumber, List<BaconPath> candidates, BaconPath candidate) {
+    private void analyzeCandidate(List<BaconPath> candidates, BaconPath candidate) {
         if (baconNumber.getFirst().equals(candidate.getFirst())
                 && baconNumber.getLast().equals(candidate.getLast())) {
             if (!matches.isEmpty() && candidate.size() < matches.get(0).size()) {

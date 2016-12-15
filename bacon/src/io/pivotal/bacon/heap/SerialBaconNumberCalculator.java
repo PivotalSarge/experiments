@@ -22,7 +22,7 @@ public class SerialBaconNumberCalculator extends QueuedBaconNumberCalculator {
         // NOP
     }
 
-    protected void progress(BaconNumber baconNumber) {
-        calculateNext(baconNumber);
+    protected void progress() {
+        calculateNext();
     }
 }
