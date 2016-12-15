@@ -7,11 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e9e47b3-380f-4216-b4bd-05f248b382c9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/QueuedBaconNumberCalculator.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/PooledBaconNumberCalculator.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/ParallelBaconNumberCalculator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/SerialBaconNumberCalculator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/QueuedBaconNumberCalculator.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/heap/QueuedBaconNumberCalculator.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,8 +40,8 @@
       <file leaf-file-name="QueuedBaconNumberCalculator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/QueuedBaconNumberCalculator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="26" column="36" lean-forward="true" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
+            <state relative-caret-position="361">
+              <caret line="105" column="33" lean-forward="false" selection-start-line="105" selection-start-column="33" selection-end-line="105" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -657,7 +654,14 @@
       <option name="project" value="LOCAL" />
       <updated>1481840959070</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor queued bacon number calculation into a base class.">
+      <created>1481842450941</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1481842450941</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -730,7 +734,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Switch to bespoke work queue." />
     <MESSAGE value="Refactor body of calculate loop." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor body of calculate loop." />
+    <MESSAGE value="Refactor queued bacon number calculation into a base class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor queued bacon number calculation into a base class." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1049,8 +1054,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/heap/QueuedBaconNumberCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="26" column="36" lean-forward="true" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
+        <state relative-caret-position="361">
+          <caret line="105" column="33" lean-forward="false" selection-start-line="105" selection-start-column="33" selection-end-line="105" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

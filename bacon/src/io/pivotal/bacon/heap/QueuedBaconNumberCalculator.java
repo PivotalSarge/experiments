@@ -31,13 +31,15 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
     private List<BaconPath> matches = Collections.synchronizedList(new LinkedList<BaconPath>());
 
     protected QueuedBaconNumberCalculator() {
-        super(new io.pivotal.bacon.heap.ActorDatabase(), new io.pivotal.bacon.heap.MovieDatabase());
+        super(new ActorDatabase(), new MovieDatabase());
 
         FileLoader fileLoader = new FileLoader();
         fileLoader.load("/Users/mdodge/experiments/bacon/tiny.list", actorDatabase, movieDatabase);
     }
 
     public synchronized void calculate(BaconNumber baconNumber) {
+        this.baconNumber = baconNumber;
+
         count.set(0);
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
@@ -45,9 +47,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         setUp(baconNumber);
 
         while (!working.isEmpty() || 0 < count.get()) {
-//          System.out.println("0: isEmpty=" + working.isEmpty() + "\tcount=" + count.get());
             progress(baconNumber);
-//          System.out.println("1: isEmpty=" + working.isEmpty() + "\tcount=" + count.get());
         }
 
         tearDown();
@@ -72,10 +72,7 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         if (baconPath != null) {
             count.incrementAndGet();
 
-            List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
-//            System.out.println("candidates.size()=" + candidates.size());
-            for (BaconPath candidate : candidates) {
-//                System.out.println("candidate=" + candidate);
+            for (BaconPath candidate : analyzeCandidates(baconNumber, baconPath)) {
                 working.enqueue(candidate);
             }
 
@@ -88,43 +85,36 @@ public class QueuedBaconNumberCalculator extends BaconNumberCalculator {
         }
     }
 
-    private List<BaconPath> analyzeCandidate(BaconNumber baconNumber, BaconPath baconPath) {
+    private List<BaconPath> analyzeCandidates(BaconNumber baconNumber, BaconPath baconPath) {
         List<BaconPath> candidates = new LinkedList<BaconPath>();
 
-//        System.out.println("\n\nbaconPath=" + baconPath);
         Actor next = baconPath.getLast();
-//        System.out.println("Next: " + next + (examined.contains(next) ? " has " : " has NOT ") + "been examined");
         if (!examined.contains(next)) {
             examined.add(next);
-//            System.out.println("next.getMovies().size()=" + next.getMovies().size());
             for (Movie movie : next.getMovies()) {
-//                System.out.println("1: " + movie + ":\t" + movie.getActors());
                 for (Actor actor : movie.getActors()) {
-//                    System.out.println(actor.getMovies().size() + "\t" + actor);
-//                    System.out.println("Candidate: " + actor + (examined.contains(actor) ? " has " : " has NOT ") + "been examined");
                     if (!next.equals(actor)) {
-                        BaconPath candidate = create(baconPath, movie, actor);
-//                        System.out.println("candidate=" + candidate);
-//                        System.out.println("last=" + baconNumber.getLast());
-                        if (baconNumber.getFirst().equals(candidate.getFirst())
-                                && baconNumber.getLast().equals(candidate.getLast())) {
-//                            System.out.println("MATCH!");
-                            if (!matches.isEmpty() && candidate.size() < matches.get(0).size()) {
-                                matches.clear();
-                            }
-
-                            if (matches.isEmpty() || candidate.size() == matches.get(0).size()) {
-                                matches.add(candidate);
-                            }
-                        } else {
-                            candidates.add(candidate);
-                        }
+                        analyzeCandidate(baconNumber, candidates, create(baconPath, movie, actor));
                     }
                 }
             }
         }
 
-//        System.out.println("working.isEmpty()=" + working.isEmpty() + "\tcandidates.size()=" + candidates.size());
         return candidates;
+    }
+
+    private void analyzeCandidate(BaconNumber baconNumber, List<BaconPath> candidates, BaconPath candidate) {
+        if (baconNumber.getFirst().equals(candidate.getFirst())
+                && baconNumber.getLast().equals(candidate.getLast())) {
+            if (!matches.isEmpty() && candidate.size() < matches.get(0).size()) {
+                matches.clear();
+            }
+
+            if (matches.isEmpty() || candidate.size() == matches.get(0).size()) {
+                matches.add(candidate);
+            }
+        } else {
+            candidates.add(candidate);
+        }
     }
 }
