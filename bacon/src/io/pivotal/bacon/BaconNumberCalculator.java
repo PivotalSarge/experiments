@@ -1,8 +1,7 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

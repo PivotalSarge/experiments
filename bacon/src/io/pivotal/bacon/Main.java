@@ -1,11 +1,11 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.io.IOException;
 
-import pivotal.io.bacon.http.Server;
+import io.pivotal.bacon.http.Server;
 
 public class Main {
-    private static final String PREFIX = "pivotal.io.bacon.";
+    private static final String PREFIX = "io.pivotal.bacon.";
 
     public static void main(String[] args) {
         if (0 == args.length) {

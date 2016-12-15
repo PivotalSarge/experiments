@@ -1,4 +1,4 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.util.Deque;
 import java.util.LinkedList;

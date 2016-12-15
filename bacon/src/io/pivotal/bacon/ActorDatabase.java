@@ -1,4 +1,4 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 /**
  * Created by mdodge on 08/12/2016.

@@ -1,14 +1,14 @@
-package pivotal.io.bacon.heap;
+package io.pivotal.bacon.heap;
 
 import java.util.Map;
 import java.util.HashMap;
 
-import pivotal.io.bacon.Movie;
+import io.pivotal.bacon.Movie;
 
 /**
  * Created by mdodge on 08/12/2016.
  */
-public class MovieDatabase implements pivotal.io.bacon.MovieDatabase {
+public class MovieDatabase implements io.pivotal.bacon.MovieDatabase {
     /**
      * Map from movie name to movie.
      */

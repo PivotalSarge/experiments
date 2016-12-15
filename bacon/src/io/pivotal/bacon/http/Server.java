@@ -1,4 +1,4 @@
-package pivotal.io.bacon.http;
+package io.pivotal.bacon.http;
 
 import com.sun.net.httpserver.HttpServer;
 

@@ -1,4 +1,4 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.util.ArrayList;
 import java.util.List;

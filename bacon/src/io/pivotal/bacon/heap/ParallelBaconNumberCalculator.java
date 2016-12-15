@@ -1,12 +1,12 @@
-package pivotal.io.bacon.heap;
+package io.pivotal.bacon.heap;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import pivotal.io.bacon.BaconNumber;
-import pivotal.io.bacon.BaconPath;
+import io.pivotal.bacon.BaconNumber;
+import io.pivotal.bacon.BaconPath;
 
 /**
  * Created by mdodge on 14/12/2016.

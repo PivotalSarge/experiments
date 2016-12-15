@@ -1,4 +1,4 @@
-package pivotal.io.bacon.http;
+package io.pivotal.bacon.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,10 +9,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import pivotal.io.bacon.Actor;
-import pivotal.io.bacon.BaconNumber;
-import pivotal.io.bacon.BaconNumberCalculator;
-import pivotal.io.bacon.heap.SerialBaconNumberCalculator;
+import io.pivotal.bacon.BaconNumber;
+import io.pivotal.bacon.Actor;
+import io.pivotal.bacon.BaconNumberCalculator;
+import io.pivotal.bacon.heap.SerialBaconNumberCalculator;
 
 //import java.io.InputStream;
 

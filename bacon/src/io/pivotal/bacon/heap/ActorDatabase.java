@@ -1,14 +1,14 @@
-package pivotal.io.bacon.heap;
+package io.pivotal.bacon.heap;
 
 import java.util.Map;
 import java.util.HashMap;
 
-import pivotal.io.bacon.Actor;
+import io.pivotal.bacon.Actor;
 
 /**
  * Created by mdodge on 08/12/2016.
  */
-public class ActorDatabase implements pivotal.io.bacon.ActorDatabase {
+public class ActorDatabase implements io.pivotal.bacon.ActorDatabase {
     /**
      * Map from actor name to actor.
      */

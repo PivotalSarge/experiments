@@ -1,4 +1,4 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

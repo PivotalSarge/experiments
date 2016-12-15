@@ -1,4 +1,4 @@
-package pivotal.io.bacon;
+package io.pivotal.bacon;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
