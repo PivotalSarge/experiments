@@ -17,11 +17,13 @@ import io.pivotal.bacon.Movie;
  * Created by mdodge on 14/12/2016.
  */
 public class SerialBaconNumberCalculator extends BaconNumberCalculator {
-    Set examined = Collections.synchronizedSet(new HashSet());
+    Set<Actor> examined = Collections.synchronizedSet(new HashSet<Actor>());
 
     io.pivotal.bacon.BaconPathQueue working = new BaconPathQueue();
 
     List<BaconPath> matches = Collections.synchronizedList(new LinkedList<BaconPath>());
+
+    boolean done = false;
 
     public SerialBaconNumberCalculator() {
         super(new ActorDatabase(), new MovieDatabase());
@@ -32,15 +34,32 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 //        System.out.println("movieDatabase.size()=" + movieDatabase.size());
     }
 
+    protected synchronized void setDone() {
+        done = true;
+        notifyAll();
+    }
+
     public void calculate(BaconNumber baconNumber) {
+        done = false;
+
         working.enqueue(new BaconPath(baconNumber.getFirst()));
-        while (!working.isEmpty()) {
-            BaconPath baconPath = working.dequeue();
-            for (BaconPath candidate : analyzeCandidate(baconNumber, baconPath)) {
-                working.enqueue(candidate);
+
+        while (!done) {
+            if (calculateNext(baconNumber)) {
+                setDone();
             }
         }
+
         update(baconNumber, matches);
+    }
+
+    protected boolean calculateNext(BaconNumber baconNumber) {
+        BaconPath baconPath = working.dequeue();
+        List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
+        for (BaconPath candidate : candidates) {
+            working.enqueue(candidate);
+        }
+        return (working.isEmpty() && candidates.isEmpty());
     }
 
     protected List<BaconPath> analyzeCandidate(BaconNumber baconNumber, BaconPath baconPath) {
@@ -73,13 +92,13 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
                             }
                         } else {
                             candidates.add(candidate);
-//                            System.out.println("working.size()=" + working.size());
                         }
                     }
                 }
             }
         }
 
+//        System.out.println("working.isEmpty()=" + working.isEmpty() + "\tcandidates.size()=" + candidates.size());
         return candidates;
     }
 }

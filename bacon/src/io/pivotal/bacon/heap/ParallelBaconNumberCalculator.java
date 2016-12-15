@@ -12,24 +12,31 @@ import io.pivotal.bacon.BaconPath;
  * Created by mdodge on 14/12/2016.
  */
 public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
-    ExecutorService pool = Executors.newFixedThreadPool(16);
+    static final int NUMBER_OF_THREADS = 16;
 
     public ParallelBaconNumberCalculator() {
         // NOP
     }
 
     public void calculate(BaconNumber baconNumber) {
-        pool.execute(new Task(baconNumber, new BaconPath(baconNumber.getFirst())));
-        // Is it strictly accurate to add one for 'two'?
-        while (examined.size() + 1 < actorDatabase.size()) {
+        done = false;
+
+        ExecutorService pool = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+        for (int i = 0; i < NUMBER_OF_THREADS; ++i) {
+            pool.execute(new Executor(baconNumber));
+        }
+
+        working.enqueue(new BaconPath(baconNumber.getFirst()));
+
+        while (!done) {
             try {
-//                System.out.println("Sleeping...");
-                Thread.currentThread().sleep(100);
-            } catch (InterruptedException ie) {
+                wait(10);
+            }
+            catch (Exception e) {
                 // NOP
             }
         }
-//        System.out.println("Shutting down...");
+
         try {
             pool.shutdown();
             pool.awaitTermination(5, TimeUnit.SECONDS);
@@ -38,26 +45,20 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
         } finally {
             pool.shutdownNow();
         }
+
         update(baconNumber, matches);
     }
 
-    class Task implements Runnable {
+    class Executor implements Runnable {
         BaconNumber baconNumber;
 
-        BaconPath baconPath;
-
-        Task(BaconNumber baconNumber, BaconPath baconPath) {
-//            System.out.println("first=" + baconNumber.getFirst());
-//            System.out.println("last=" + baconNumber.getLast());
+        Executor(BaconNumber baconNumber) {
             this.baconNumber = baconNumber;
-//            System.out.println("baconPath=" + baconPath);
-            this.baconPath = baconPath;
         }
 
         public void run() {
-            List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
-            for (BaconPath candidate : candidates) {
-                pool.execute(new Task(baconNumber, candidate));
+            if (calculateNext(baconNumber)) {
+                setDone();
             }
         }
     }
