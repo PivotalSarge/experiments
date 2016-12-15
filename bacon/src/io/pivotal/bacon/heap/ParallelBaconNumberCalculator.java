@@ -19,16 +19,16 @@ public class ParallelBaconNumberCalculator extends QueuedBaconNumberCalculator {
         // NOP
     }
 
-    protected void setUp(BaconNumber baconNumber) {
+    protected void setUp() {
         executors.clear();
         for (int i = 0; i < NUMBER_OF_THREADS; ++i) {
-            Executor executor = new Executor("Executor " + i, baconNumber);
+            Executor executor = new Executor("Executor " + i);
             executors.add(executor);
             new Thread(executor).start();
         }
     }
 
-    protected void progress(BaconNumber baconNumber) {
+    protected void progress() {
         synchronized (semaphore) {
             try {
                 semaphore.wait(1000);
@@ -47,20 +47,17 @@ public class ParallelBaconNumberCalculator extends QueuedBaconNumberCalculator {
     class Executor implements Runnable {
         final String name;
 
-        final BaconNumber baconNumber;
-
         volatile boolean done = false;
 
-        Executor(String name, BaconNumber baconNumber) {
+        Executor(String name) {
             this.name = name;
-            this.baconNumber = baconNumber;
         }
 
         public void run() {
 //            System.out.println("START  " + name);
             while (!done) {
 //                System.out.println("TAKE   " + name);
-                calculateNext(baconNumber);
+                calculateNext();
                 synchronized (working) {
                     try {
                         working.wait(10);
