@@ -5,11 +5,12 @@ import java.util.List;
 
 import io.pivotal.bacon.BaconNumber;
 import io.pivotal.bacon.BaconPath;
+import io.pivotal.bacon.FileLoader;
 
 /**
  * Created by mdodge on 14/12/2016.
  */
-public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
+public class ParallelBaconNumberCalculator extends QueuedBaconNumberCalculator {
     static final int NUMBER_OF_THREADS = 8;
 
     final List<Executor> executors = new ArrayList<Executor>();
