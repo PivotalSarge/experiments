@@ -19,7 +19,7 @@ import io.pivotal.bacon.Movie;
 public class SerialBaconNumberCalculator extends BaconNumberCalculator {
     Set examined = Collections.synchronizedSet(new HashSet());
 
-    List<BaconPath> working = Collections.synchronizedList(new LinkedList<BaconPath>());
+    io.pivotal.bacon.BaconPathQueue working = new BaconPathQueue();
 
     List<BaconPath> matches = Collections.synchronizedList(new LinkedList<BaconPath>());
 
@@ -33,11 +33,12 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
     }
 
     public void calculate(BaconNumber baconNumber) {
-        working.add(new BaconPath(baconNumber.getFirst()));
+        working.enqueue(new BaconPath(baconNumber.getFirst()));
         while (!working.isEmpty()) {
-            BaconPath baconPath = working.remove(0);
-            List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
-            working.addAll(candidates);
+            BaconPath baconPath = working.dequeue();
+            for (BaconPath candidate : analyzeCandidate(baconNumber, baconPath)) {
+                working.enqueue(candidate);
+            }
         }
         update(baconNumber, matches);
     }

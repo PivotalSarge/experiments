@@ -4,7 +4,9 @@ package io.pivotal.bacon;
  * Created by mdodge on 14/12/2016.
  */
 public interface BaconPathQueue {
-    public void enqueue(BaconPath baconPath);
+    boolean isEmpty();
 
-    public BaconPath dequeue();
+    void enqueue(BaconPath baconPath);
+
+    BaconPath dequeue();
 }
