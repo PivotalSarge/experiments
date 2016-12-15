@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.pivotal.bacon.Actor;
 import io.pivotal.bacon.BaconNumber;
@@ -17,13 +18,17 @@ import io.pivotal.bacon.Movie;
  * Created by mdodge on 14/12/2016.
  */
 public class SerialBaconNumberCalculator extends BaconNumberCalculator {
+    final AtomicInteger count = new AtomicInteger();
+
+    final Object semaphore = new Object();
+
+    BaconNumber baconNumber;
+
     Set<Actor> examined = Collections.synchronizedSet(new HashSet<Actor>());
 
     io.pivotal.bacon.BaconPathQueue working = new BaconPathQueue();
 
     List<BaconPath> matches = Collections.synchronizedList(new LinkedList<BaconPath>());
-
-    int count = 0;
 
     public SerialBaconNumberCalculator() {
         super(new ActorDatabase(), new MovieDatabase());
@@ -34,20 +39,22 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 //        System.out.println("movieDatabase.size()=" + movieDatabase.size());
     }
 
-    protected synchronized void clearCount() {
-        count = 0;
+    protected void clearCount() {
+        count.set(0);
     }
 
-    protected synchronized void incrementCount() {
-        ++count;
+    protected void incrementCount() {
+        count.incrementAndGet();
 //        System.out.println("+: " + count);
     }
 
-    protected synchronized void decrementCount() {
-        --count;
+    protected void decrementCount() {
+        count.decrementAndGet();
 //        System.out.println("-: " + count);
-        if (count < 1) {
-            notifyAll();
+        if (count.get() < 1) {
+            synchronized (semaphore) {
+                semaphore.notifyAll();
+            }
         }
     }
 
@@ -56,12 +63,30 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
 
-        while (!working.isEmpty() || 0 < count) {
+        setUp(baconNumber);
+
+        synchronized (this) {
+            while (!working.isEmpty() || 0 < count.get()) {
 //            System.out.println("isEmpty=" + working.isEmpty() + "\tcount=" + count);
-            calculateNext(baconNumber);
+                progress(baconNumber);
+            }
         }
 
+        tearDown();
+
         update(baconNumber, matches);
+    }
+
+    protected void setUp(BaconNumber baconNumber) {
+        // NOP
+    }
+
+    protected void progress(BaconNumber baconNumber) {
+        calculateNext(baconNumber);
+    }
+
+    protected void tearDown() {
+        // NOP
     }
 
     protected void calculateNext(BaconNumber baconNumber) {

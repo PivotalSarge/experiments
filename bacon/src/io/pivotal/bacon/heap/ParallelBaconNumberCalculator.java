@@ -12,40 +12,53 @@ import io.pivotal.bacon.BaconPath;
 public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
     static final int NUMBER_OF_THREADS = 8;
 
+    final List<Executor> executors = new ArrayList<Executor>();
+
     public ParallelBaconNumberCalculator() {
         // NOP
     }
 
-    @SuppressWarnings("deprecation")
     public void calculate(BaconNumber baconNumber) {
         clearCount();
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
 
-        List<Executor> executors = new ArrayList<Executor>();
+        setUp(baconNumber);
+
+        while (!working.isEmpty() || 0 < count.get()) {
+//          System.out.println("0: isEmpty=" + working.isEmpty() + "\tcount=" + count);
+            progress(baconNumber);
+//          System.out.println("1: isEmpty=" + working.isEmpty() + "\tcount=" + count);
+        }
+
+        tearDown();
+
+        update(baconNumber, matches);
+    }
+
+    protected void setUp(BaconNumber baconNumber) {
+        executors.clear();
         for (int i = 0; i < NUMBER_OF_THREADS; ++i) {
             Executor executor = new Executor("Executor " + i, baconNumber);
             executors.add(executor);
             new Thread(executor).start();
         }
+    }
 
-        synchronized (this) {
-            while (!working.isEmpty() || 0 < count) {
-//                System.out.println("0: isEmpty=" + working.isEmpty() + "\tcount=" + count);
-                try {
-                    wait(1000);
-                } catch (Exception e) {
-                    // NOP
-                }
-//                System.out.println("1: isEmpty=" + working.isEmpty() + "\tcount=" + count);
+    protected void progress(BaconNumber baconNumber) {
+        synchronized (semaphore) {
+            try {
+                semaphore.wait(1000);
+            } catch (Exception e) {
+                // NOP
             }
         }
+    }
 
+    protected void tearDown() {
         for (Executor executor : executors) {
             executor.done = true;
         }
-
-        update(baconNumber, matches);
     }
 
     class Executor implements Runnable {
@@ -65,11 +78,10 @@ public class ParallelBaconNumberCalculator extends SerialBaconNumberCalculator {
             while (!done) {
 //                System.out.println("TAKE   " + name);
                 calculateNext(baconNumber);
-                synchronized(working) {
+                synchronized (working) {
                     try {
                         working.wait(10);
-                    }
-                    catch (InterruptedException ie) {
+                    } catch (InterruptedException ie) {
                         // NOP
                     }
                 }
