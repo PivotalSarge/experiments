@@ -1,6 +1,7 @@
 package io.pivotal.bacon.heap;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import io.pivotal.bacon.BaconPath;
 
@@ -15,20 +16,27 @@ public class BaconPathQueue implements io.pivotal.bacon.BaconPathQueue {
     }
 
     public boolean isEmpty() {
+//        System.out.println("isEmpty(): queue.size()=" + queue.size());
         return queue.isEmpty();
     }
 
     public void enqueue(BaconPath baconPath) {
-        queue.offer(baconPath);
+        try {
+            queue.offer(baconPath, 10, TimeUnit.MILLISECONDS);
+//        System.out.println("enqueue(): queue.size()=" + queue.size());
+        }
+        catch (InterruptedException ie) {
+            ie.printStackTrace(System.err);
+        }
     }
 
     public BaconPath dequeue() {
-        for (int i = 0; i < 5; ++i) {
-            try {
-                return queue.take();
-            } catch (InterruptedException ie) {
-                // NOP
-            }
+        try {
+//        System.out.println("dequeue(): queue.size()=" + queue.size());
+            return queue.poll(10, TimeUnit.MILLISECONDS);
+        }
+        catch (InterruptedException ie) {
+            ie.printStackTrace(System.err);
         }
         return null;
     }

@@ -23,7 +23,7 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 
     List<BaconPath> matches = Collections.synchronizedList(new LinkedList<BaconPath>());
 
-    boolean done = false;
+    int count = 0;
 
     public SerialBaconNumberCalculator() {
         super(new ActorDatabase(), new MovieDatabase());
@@ -34,32 +34,48 @@ public class SerialBaconNumberCalculator extends BaconNumberCalculator {
 //        System.out.println("movieDatabase.size()=" + movieDatabase.size());
     }
 
-    protected synchronized void setDone() {
-        done = true;
-        notifyAll();
+    protected synchronized void clearCount() {
+        count = 0;
+    }
+
+    protected synchronized void incrementCount() {
+        ++count;
+//        System.out.println("+: " + count);
+    }
+
+    protected synchronized void decrementCount() {
+        --count;
+//        System.out.println("-: " + count);
+        if (count < 1) {
+            notifyAll();
+        }
     }
 
     public void calculate(BaconNumber baconNumber) {
-        done = false;
+        clearCount();
 
         working.enqueue(new BaconPath(baconNumber.getFirst()));
 
-        while (!done) {
-            if (calculateNext(baconNumber)) {
-                setDone();
-            }
+        while (!working.isEmpty() || 0 < count) {
+//            System.out.println("isEmpty=" + working.isEmpty() + "\tcount=" + count);
+            calculateNext(baconNumber);
         }
 
         update(baconNumber, matches);
     }
 
-    protected boolean calculateNext(BaconNumber baconNumber) {
+    protected void calculateNext(BaconNumber baconNumber) {
         BaconPath baconPath = working.dequeue();
-        List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
-        for (BaconPath candidate : candidates) {
-            working.enqueue(candidate);
+        if (baconPath != null) {
+            incrementCount();
+            List<BaconPath> candidates = analyzeCandidate(baconNumber, baconPath);
+//            System.out.println("candidates.size()=" + candidates.size());
+            for (BaconPath candidate : candidates) {
+//                System.out.println("candidate=" + candidate);
+                working.enqueue(candidate);
+            }
+            decrementCount();
         }
-        return (working.isEmpty() && candidates.isEmpty());
     }
 
     protected List<BaconPath> analyzeCandidate(BaconNumber baconNumber, BaconPath baconPath) {
