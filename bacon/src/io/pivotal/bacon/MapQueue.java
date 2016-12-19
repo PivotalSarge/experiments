@@ -2,6 +2,7 @@ package io.pivotal.bacon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,7 @@ public class MapQueue<E> implements Queue<E> {
     private int getFirstIndex() {
         if (!map.isEmpty()) {
             List<Integer> indices = new ArrayList<Integer>(map.keySet());
+            indices.sort(Comparator.naturalOrder());
             return indices.get(0);
         }
         return 0;
@@ -36,6 +38,7 @@ public class MapQueue<E> implements Queue<E> {
     private int getLastIndex() {
         if (!map.isEmpty()) {
             List<Integer> indices = new ArrayList<Integer>(map.keySet());
+            indices.sort(Comparator.naturalOrder());
             return indices.get(indices.size() - 1) + 1;
         }
         return 0;

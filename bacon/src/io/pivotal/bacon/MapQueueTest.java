@@ -43,37 +43,62 @@ class MapQueueTest {
     void addElementAndRemove() {
         assertEquals(0, queue.size());
         assertTrue(queue.isEmpty());
-        assertEquals(false, queue.contains(uno));
+        assertFalse(queue.contains(uno));
 
         queue.add(uno);
-        assertEquals(1, queue.size());
+        queue.add(dos);
+        queue.add(tres);
+
+        assertEquals(3, queue.size());
         assertFalse(queue.isEmpty());
-        assertEquals(true, queue.contains(uno));
+        assertTrue(queue.contains(uno));
+        assertTrue(queue.contains(dos));
+        assertTrue(queue.contains(tres));
         assertSame(uno, queue.element());
 
-        String s = queue.remove();
+        final String s1 = queue.remove();
+        assertEquals(2, queue.size());
+        assertFalse(queue.isEmpty());
+        assertFalse(queue.contains(uno));
+        assertTrue(queue.contains(dos));
+        assertTrue(queue.contains(tres));
+        assertSame(uno, s1);
+        assertSame(dos, queue.element());
+
+        final String s2 = queue.remove();
+        assertEquals(1, queue.size());
+        assertFalse(queue.isEmpty());
+        assertFalse(queue.contains(uno));
+        assertFalse(queue.contains(dos));
+        assertTrue(queue.contains(tres));
+        assertSame(dos, s2);
+        assertSame(tres, queue.element());
+
+        final String s3 = queue.remove();
         assertEquals(0, queue.size());
         assertTrue(queue.isEmpty());
-        assertEquals(false, queue.contains(uno));
-        assertSame(uno, s);
+        assertFalse(queue.contains(uno));
+        assertFalse(queue.contains(dos));
+        assertFalse(queue.contains(tres));
+        assertSame(tres, s3);
     }
 
     @Test
     void offerPeekAndPoll() {
         assertEquals(0, queue.size());
         assertTrue(queue.isEmpty());
-        assertEquals(false, queue.contains(uno));
+        assertFalse(queue.contains(uno));
 
         queue.offer(uno);
         assertEquals(1, queue.size());
         assertFalse(queue.isEmpty());
-        assertEquals(true, queue.contains(uno));
+        assertTrue(queue.contains(uno));
         assertSame(uno, queue.peek());
 
         String s = queue.poll();
         assertEquals(0, queue.size());
         assertTrue(queue.isEmpty());
-        assertEquals(false, queue.contains(uno));
+        assertFalse(queue.contains(uno));
         assertSame(uno, s);
     }
 
