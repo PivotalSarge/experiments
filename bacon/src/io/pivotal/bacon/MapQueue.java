@@ -144,7 +144,7 @@ public class MapQueue<E> implements Queue<E> {
     }
 
     public boolean remove(Object o) {
-        final int index = getIndex(0);
+        final int index = getIndex(o);
         if (0 <= index) {
             map.remove(index);
             return true;
