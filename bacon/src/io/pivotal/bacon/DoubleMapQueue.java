@@ -2,7 +2,6 @@ package io.pivotal.bacon;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,42 +10,37 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
- * Created by mdodge on 15/12/2016.
+ * Created by mdodge on 19.12.16.
  */
-public class MapQueue<E> implements Queue<E> {
-    static final int NUMBER_OF_RETRIES = 5;
+public class DoubleMapQueue<E> implements Queue<E> {
+    private static final String FIRST = "First";
 
-    final Map<Integer, E> map;
+    private static final String LAST = "Last";
 
-    public MapQueue() {
-        this(new HashMap<>());
+    private final Map<String, Integer> indices;
+
+    private final Map<Integer, E> elements;
+
+    public DoubleMapQueue() {
+        this(new HashMap<>(), new HashMap<>());
     }
 
-    public MapQueue(Map<Integer, E> map) {
-        this.map = map;
+    public DoubleMapQueue(Map<String, Integer> indices, Map<Integer, E> elements) {
+        this.indices = indices;
+        this.elements = elements;
     }
 
     private int getFirstIndex() {
-        if (!map.isEmpty()) {
-            List<Integer> indices = new ArrayList<Integer>(map.keySet());
-            indices.sort(Comparator.naturalOrder());
-            return indices.get(0);
-        }
-        return 0;
+        return indices.getOrDefault(FIRST, 0);
     }
 
     private int getLastIndex() {
-        if (!map.isEmpty()) {
-            List<Integer> indices = new ArrayList<Integer>(map.keySet());
-            indices.sort(Comparator.naturalOrder());
-            return indices.get(indices.size() - 1) + 1;
-        }
-        return 0;
+        return indices.getOrDefault(LAST, -1) + 1;
     }
 
     private int getIndex(Object o) {
-        for (Integer key : map.keySet()) {
-            if (map.get(key) == o) {
+        for (Integer key : elements.keySet()) {
+            if (elements.get(key) == o) {
                 return key;
             }
         }
@@ -70,11 +64,18 @@ public class MapQueue<E> implements Queue<E> {
             throw new NullPointerException("Null element");
         }
 
-        // There is a race condition here in a multi-processing
-        // environment where two adders both get the same last
-        // index.
-        for (int i = 0; i < NUMBER_OF_RETRIES; ++i) {
-            if (null == map.putIfAbsent(getLastIndex(), e)) {
+        if (indices.isEmpty() || elements.isEmpty()) {
+            indices.put(LAST, 1);
+            indices.put(FIRST, 0);
+            elements.put(0, e);
+            return true;
+        }
+
+        while (!indices.isEmpty()) {
+            final Integer index = indices.get(LAST);
+            if (indices.remove(LAST, index)) {
+                indices.put(LAST, index + 1);
+                elements.put(index + 1, e);
                 return true;
             }
         }
@@ -82,23 +83,23 @@ public class MapQueue<E> implements Queue<E> {
     }
 
     public E peek() {
-        if (!isEmpty()) {
-            return map.get(getFirstIndex());
+        if (indices.isEmpty() || elements.isEmpty()) {
+            return null;
         }
-        return null;
+
+        return elements.get(indices.get(FIRST));
     }
 
     public E poll() {
-        if (!isEmpty()) {
-            // There is a race condition here in a multi-processing
-            // environment where two removers both get the same first
-            // index.
-            for (int i = 0; i < NUMBER_OF_RETRIES; ++i) {
-                final int index = getFirstIndex();
-                final E e = map.get(index);
-                if (map.remove(index, e)) {
-                    return e;
-                }
+        if (indices.isEmpty() || elements.isEmpty()) {
+            return null;
+        }
+
+        while (!indices.isEmpty()) {
+            final Integer index = indices.get(FIRST);
+            if (indices.remove(FIRST, index)) {
+                indices.put(FIRST, index + 1);
+                return elements.remove(index);
             }
         }
         return null;
@@ -131,7 +132,8 @@ public class MapQueue<E> implements Queue<E> {
     }
 
     public void clear() {
-        map.clear();
+        indices.clear();
+        elements.clear();
     }
 
     public boolean contains(Object o) {
@@ -143,24 +145,32 @@ public class MapQueue<E> implements Queue<E> {
     }
 
     public Iterator<E> iterator() {
-        return new InternalIterator(new ArrayList<Integer>(map.keySet()));
+        return new InternalIterator(new ArrayList<Integer>(elements.keySet()));
     }
 
     public boolean remove(Object o) {
         final int index = getIndex(o);
         if (0 <= index) {
-            map.remove(index);
+            elements.remove(index);
+
+            if (index == getLastIndex()) {
+                indices.put(LAST, index - 1);
+            }
+            if (index == getFirstIndex()) {
+                indices.put(FIRST, index + 1);
+            }
+
             return true;
         }
         return false;
     }
 
     public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("MapQueue does not support removeAll");
+        throw new UnsupportedOperationException("SingleMapQueue does not support removeAll");
     }
 
     public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException("MapQueue does not support retainAll");
+        throw new UnsupportedOperationException("SingleMapQueue does not support retainAll");
     }
 
     public int size() {
@@ -177,8 +187,8 @@ public class MapQueue<E> implements Queue<E> {
         }
 
         int i = 0;
-        for (Integer key : map.keySet()) {
-            a[i++] = (E) map.get(key);
+        for (Integer key : elements.keySet()) {
+            a[i++] = (E) elements.get(key);
         }
 
         return a;
@@ -196,7 +206,7 @@ public class MapQueue<E> implements Queue<E> {
         }
 
         public E next() {
-            return (E) map.get(indices.remove(0));
+            return (E) elements.get(indices.remove(0));
         }
     }
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Created by mdodge on 19/12/2016.
  */
-class MapQueueTest {
+class SingleMapQueueTest {
     static final String uno = "uno";
 
     static final String dos = "dos";
@@ -27,11 +27,11 @@ class MapQueueTest {
 
     static final String cuatro = "cuatro";
 
-    MapQueue<String> queue;
+    SingleMapQueue<String> queue;
 
     @BeforeEach
     public void setUp() {
-        queue = new MapQueue<String>();
+        queue = new SingleMapQueue<String>();
     }
 
     @AfterEach
