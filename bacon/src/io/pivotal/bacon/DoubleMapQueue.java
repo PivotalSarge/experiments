@@ -13,29 +13,19 @@ import java.util.Queue;
  * Created by mdodge on 19.12.16.
  */
 public class DoubleMapQueue<E> implements Queue<E> {
-    private static final String FIRST = "First";
-
-    private static final String LAST = "Last";
-
-    private final Map<String, Integer> indices;
-
+    private static final String INDICES = "Indices";
+    private final Map<String, Indices> attributes;
     private final Map<Integer, E> elements;
 
     public DoubleMapQueue() {
         this(new HashMap<>(), new HashMap<>());
     }
 
-    public DoubleMapQueue(Map<String, Integer> indices, Map<Integer, E> elements) {
-        this.indices = indices;
+    public DoubleMapQueue(Map<String, Indices> attributes, Map<Integer, E> elements) {
+        this.attributes = attributes;
         this.elements = elements;
-    }
 
-    private int getFirstIndex() {
-        return indices.getOrDefault(FIRST, 0);
-    }
-
-    private int getLastIndex() {
-        return indices.getOrDefault(LAST, -1) + 1;
+        this.attributes.put(INDICES, new Indices());
     }
 
     private int getIndex(Object o) {
@@ -64,18 +54,13 @@ public class DoubleMapQueue<E> implements Queue<E> {
             throw new NullPointerException("Null element");
         }
 
-        if (indices.isEmpty() || elements.isEmpty()) {
-            indices.put(LAST, 1);
-            indices.put(FIRST, 0);
-            elements.put(0, e);
-            return true;
-        }
-
-        while (!indices.isEmpty()) {
-            final Integer index = indices.get(LAST);
-            if (indices.remove(LAST, index)) {
-                indices.put(LAST, index + 1);
-                elements.put(index + 1, e);
+        while (!attributes.isEmpty()) {
+            Indices indices = attributes.getOrDefault(INDICES, new Indices());
+            //System.out.println("offer: indices=" + indices);
+            if (attributes.remove(INDICES, indices)) {
+                indices = indices.enqueue();
+                attributes.put(INDICES, indices);
+                elements.put(indices.getBackIndex(), e);
                 return true;
             }
         }
@@ -83,22 +68,35 @@ public class DoubleMapQueue<E> implements Queue<E> {
     }
 
     public E peek() {
-        if (indices.isEmpty() || elements.isEmpty()) {
+        if (attributes.isEmpty() || elements.isEmpty()) {
             return null;
         }
 
-        return elements.get(indices.get(FIRST));
+        while (!attributes.isEmpty()) {
+            //System.out.println(" peek: attributes=" + attributes + "\telements=" + elements);
+            Indices indices = attributes.getOrDefault(INDICES, new Indices());
+            //System.out.println(" peek: indices=" + indices);
+            E e = elements.get(indices.getFrontIndex());
+            //System.out.println(" peek: e=" + e);
+            if (e != null) {
+                return e;
+            }
+        }
+        return null;
     }
 
     public E poll() {
-        if (indices.isEmpty() || elements.isEmpty()) {
+        if (attributes.isEmpty() || elements.isEmpty()) {
             return null;
         }
 
-        while (!indices.isEmpty()) {
-            final Integer index = indices.get(FIRST);
-            if (indices.remove(FIRST, index)) {
-                indices.put(FIRST, index + 1);
+        while (!attributes.isEmpty()) {
+            Indices indices = attributes.getOrDefault(INDICES, new Indices());
+            //System.out.println(" poll: indices=" + indices);
+            if (attributes.remove(INDICES, indices)) {
+                final int index = indices.getFrontIndex();
+                indices = indices.dequeue();
+                attributes.put(INDICES, indices);
                 return elements.remove(index);
             }
         }
@@ -132,7 +130,7 @@ public class DoubleMapQueue<E> implements Queue<E> {
     }
 
     public void clear() {
-        indices.clear();
+        attributes.clear();
         elements.clear();
     }
 
@@ -141,7 +139,7 @@ public class DoubleMapQueue<E> implements Queue<E> {
     }
 
     public boolean isEmpty() {
-        return (getFirstIndex() >= getLastIndex());
+        return size() < 1;
     }
 
     public Iterator<E> iterator() {
@@ -151,16 +149,16 @@ public class DoubleMapQueue<E> implements Queue<E> {
     public boolean remove(Object o) {
         final int index = getIndex(o);
         if (0 <= index) {
-            elements.remove(index);
-
-            if (index == getLastIndex()) {
-                indices.put(LAST, index - 1);
+            while (!attributes.isEmpty()) {
+                Indices indices = attributes.getOrDefault(INDICES, new Indices());
+                //System.out.println("remove: indices=" + indices);
+                if (attributes.remove(INDICES, indices)) {
+                    indices = indices.remove(index);
+                    attributes.put(INDICES, indices);
+                    elements.remove(index);
+                    return true;
+                }
             }
-            if (index == getFirstIndex()) {
-                indices.put(FIRST, index + 1);
-            }
-
-            return true;
         }
         return false;
     }
@@ -174,7 +172,10 @@ public class DoubleMapQueue<E> implements Queue<E> {
     }
 
     public int size() {
-        return getLastIndex() - getFirstIndex();
+        if (!attributes.isEmpty()) {
+            return attributes.getOrDefault(INDICES, new Indices()).span();
+        }
+        return 0;
     }
 
     public Object[] toArray() {
@@ -192,6 +193,73 @@ public class DoubleMapQueue<E> implements Queue<E> {
         }
 
         return a;
+    }
+
+    public class Indices {
+        private int front = 0;
+
+        private int back = 0;
+
+        Indices() {
+            this(0, 0);
+        }
+
+        private Indices(int front, int back) {
+            this.front = front;
+            this.back = back;
+        }
+
+        int getFrontIndex() {
+            return front;
+        }
+
+        int getBackIndex() {
+            if (front < back) {
+                return back - 1;
+            }
+            return front;
+        }
+
+        int span() {
+            return back - front;
+        }
+
+        Indices enqueue() {
+            return new Indices(front, back + 1);
+        }
+
+        Indices dequeue() {
+            if (back <= front + 1) {
+                return new Indices();
+            }
+            return new Indices(front + 1, back);
+        }
+
+        Indices remove(int index) {
+            if (index == front) {
+                return dequeue();
+            }
+            if (index == back) {
+                return new Indices(front, back - 1);
+            }
+            return (Indices) clone();
+        }
+
+        protected Object clone() {
+            return new Indices(front, back);
+        }
+
+        public boolean equals(Object obj) {
+            Indices other = (Indices) obj;
+            if (other != null) {
+                return front == other.front && back == other.back;
+            }
+            return false;
+        }
+
+        public String toString() {
+            return "(" + front + "," + back + ")";
+        }
     }
 
     class InternalIterator<E> implements Iterator<E> {

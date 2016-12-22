@@ -22,11 +22,11 @@ class DoubleMapQueueTest {
 
     static final String cuatro = "cuatro";
 
-    SingleMapQueue<String> queue;
+    DoubleMapQueue<String> queue;
 
     @BeforeEach
     public void setUp() {
-        queue = new SingleMapQueue<String>();
+        queue = new DoubleMapQueue<String>();
     }
 
     @AfterEach
@@ -134,6 +134,7 @@ class DoubleMapQueueTest {
 
     @Test
     void remove() {
+        System.out.println("remove");
         queue.addAll(Arrays.asList(uno, dos, tres));
         assertTrue(queue.remove(dos));
         assertTrue(queue.remove(tres));
