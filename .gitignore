@@ -4,10 +4,11 @@ bacon/out/
 /**/*.cmake
 /**/CMakeCache.txt
 /**/CMakeFiles/
-/protobuf_prototype/**/io/
+/protobuf_prototype/**/io/pivotal/message/*.java
 /protobuf_prototype/**/Makefile
 /protobuf_prototype/**/*.pb.*
 /protobuf_prototype/**/*.exe
 /protobuf_prototype/**/*.jar
+/protobuf_prototype/**/java/build/
 /bacon/**/*.bz2
 /bacon/**/all_actors.*
