@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="protobuf_prototype_java:jar">
+    <output-path>$PROJECT_DIR$/protobuf_prototype/java/build</output-path>
+    <root id="archive" name="protobuf_prototype_java.jar">
+      <element id="module-output" name="protobuf_prototype_java" />
+      <element id="extracted-dir" path="/usr/local/lib/protobuf-java-3.1.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
