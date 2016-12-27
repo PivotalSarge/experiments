@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +31,10 @@ import io.pivotal.message.MessageProtocol.PutReply;
 import io.pivotal.message.MessageProtocol.PutRequest;
 
 public class Server {
+    public interface Listener {
+        void regionChanged(String region);
+    }
+
     static boolean debugLogging = Boolean.parseBoolean(System.getenv("DEBUG_LOGGING"));
 
     private int lastId = 0;
@@ -39,11 +45,26 @@ public class Server {
 
     private ServerTask serverTask;
 
+    private List<Listener> listeners;
+
     public Server() {
         this.lastId = 0;
         this.regions = new HashMap<String, Region>();
         this.clientProcessingPool = null;
         this.serverTask = null;
+        this.listeners = new ArrayList<Listener>();
+    }
+
+    public void addListener(Listener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(Listener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
     }
 
     public void start() {
@@ -244,6 +265,7 @@ public class Server {
 
                             System.out.println();
                             dump(region);
+                            regionChanged(region);
                         } else if (Header.MessageType.GET_REQUEST == messageType) {
                             GetRequest getRequest = (GetRequest) message;
 
@@ -279,6 +301,7 @@ public class Server {
 
                             System.out.println();
                             dump(region);
+                            regionChanged(region);
                         } else if (Header.MessageType.DESTROY_REQUEST == messageType) {
                             DestroyRequest destroyRequest = (DestroyRequest) message;
 
@@ -294,6 +317,7 @@ public class Server {
 
                             System.out.println();
                             dump(region);
+                            regionChanged(region);
                         } else {
                             System.err.println("Unhandled message type: " + messageType);
                             try {
@@ -320,6 +344,12 @@ public class Server {
                 clientSocket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        void regionChanged(String region) {
+            for (Listener listener : listeners) {
+                listener.regionChanged(region);
             }
         }
 
