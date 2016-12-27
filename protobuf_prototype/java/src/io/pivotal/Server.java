@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import io.pivotal.message.MessageProtocol.ConnectReply;
 import io.pivotal.message.MessageProtocol.ConnectRequest;
@@ -29,36 +30,143 @@ import io.pivotal.message.MessageProtocol.PutRequest;
 
 public class Server {
     static boolean debugLogging = Boolean.parseBoolean(System.getenv("DEBUG_LOGGING"));
+
     private int lastId = 0;
+
     private Map<String, Region> regions;
+
+    private ExecutorService clientProcessingPool;
+
+    private ServerTask serverTask;
 
     public Server() {
         this.lastId = 0;
         this.regions = new HashMap<String, Region>();
+        this.clientProcessingPool = null;
+        this.serverTask = null;
     }
 
-    public void startServer() {
-        final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
-        Runnable serverTask = new Runnable() {
-            @Override
-            public void run() {
+    public void start() {
+        if (clientProcessingPool == null) {
+            System.out.println("Starting up...");
+
+            clientProcessingPool = Executors.newFixedThreadPool(10);
+
+            serverTask = new ServerTask();
+            Thread serverThread = new Thread(serverTask);
+            serverThread.start();
+
+            System.out.println("Started up.");
+        }
+    }
+
+    public void stop() {
+        if (clientProcessingPool != null) {
+            System.out.println("Shutting down...");
+
+            serverTask.stop();
+            serverTask = null;
+
+            clientProcessingPool.shutdown();
+            try {
+                clientProcessingPool.awaitTermination(2, TimeUnit.SECONDS);
+            }
+            catch (InterruptedException ie) {
+                System.out.println("Shutdown timed out; forcing shutdown");
+                clientProcessingPool.shutdownNow();
+            }
+            clientProcessingPool = null;
+
+            System.out.println("Shut down.");
+        }
+    }
+
+    public void put(String reg, String key, String value) {
+        Region region = null;
+
+        if (regions.containsKey(reg)) {
+            region = regions.get(reg);
+        } else {
+            region = new Region(reg);
+            regions.put(reg, region);
+        }
+
+        region.put(key, value);
+    }
+
+    public String get(String reg, String key) {
+        String value = null;
+
+        if (regions.containsKey(reg)) {
+            final Region region = regions.get(reg);
+            if (region.containsKey(key)) {
+                value = region.get(key);
+            }
+        }
+
+        return value;
+    }
+
+    public void invalidate(String reg, String key) {
+        if (regions.containsKey(reg)) {
+            final Region region = regions.get(reg);
+            if (region.containsKey(key)) {
+                region.invalidate(key);
+            }
+        }
+    }
+
+    public void destroy(String reg, String key) {
+        if (regions.containsKey(reg)) {
+            final Region region = regions.get(reg);
+            if (region.containsKey(key)) {
+                region.destroy(key);
+            }
+        }
+    }
+
+    private class ServerTask implements Runnable {
+        private static final int PORT = 8000;
+
+        private ServerSocket serverSocket = null;
+
+        public void stop() {
+            if (serverSocket != null) {
                 try {
-                    ServerSocket serverSocket = new ServerSocket(8000);
-                    if (debugLogging) {
-                        System.out.println("Waiting for clients to connect...");
-                    }
-                    while (true) {
-                        Socket clientSocket = serverSocket.accept();
-                        clientProcessingPool.submit(new ClientTask(++lastId, clientSocket));
-                    }
-                } catch (IOException e) {
-                    System.err.println("Unable to process client request. :(");
+                    serverSocket.close();
+                }
+                catch (IOException e) {
+                    System.err.println("Unable to close server socket");
                     e.printStackTrace();
                 }
             }
-        };
-        Thread serverThread = new Thread(serverTask);
-        serverThread.start();
+        }
+
+        @Override
+        public void run() {
+            try {
+                serverSocket = new ServerSocket(PORT);
+                if (debugLogging) {
+                    System.out.println("Waiting for clients to connect...");
+                }
+
+                while (!serverSocket.isClosed()) {
+                    try {
+                        Socket clientSocket = serverSocket.accept();
+                        clientProcessingPool.submit(new ClientTask(++lastId, clientSocket));
+                    }
+                    catch (IOException e) {
+                        if (!serverSocket.isClosed()) {
+                            System.err.println("Unable to accept on port " + PORT);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Unable to listen on port " + PORT);
+                e.printStackTrace();
+            }
+        }
     }
 
     private class ClientTask implements Runnable {
@@ -73,7 +181,8 @@ public class Server {
             this.clientSocket = clientSocket;
             if (debugLogging) {
                 System.out.println("Got a client (" + this.clientId + ")! :)");
-            }
+        }
+
         }
 
         private void dump(String caption, byte[] buf) {
@@ -87,6 +196,13 @@ public class Server {
                 System.out.print(String.format("%02X", buf[z]));
             }
             System.out.println();
+        }
+
+        private void dump(String reg) {
+            if (regions.containsKey(reg)) {
+                final Region region = regions.get(reg);
+                System.out.println(region.toString());
+            }
         }
 
         @Override
@@ -112,18 +228,12 @@ public class Server {
                             break;
                         } else if (Header.MessageType.PUT_REQUEST == messageType) {
                             PutRequest putRequest = (PutRequest) message;
-                            Region region = null;
-                            if (regions.containsKey(putRequest.getRegion())) {
-                                region = regions.get(putRequest.getRegion());
-                            } else {
-                                region = new Region(putRequest.getRegion());
-                                regions.put(putRequest.getRegion(), region);
-                            }
 
                             PutReply.Builder putReply = PutReply.newBuilder();
+                            final String region = putRequest.getRegion();
                             for (int i = 0; i < putRequest.getPairCount(); ++i) {
                                 Pair pair = putRequest.getPair(i);
-                                region.put(pair.getKey(), pair.getValue());
+                                put(region, pair.getKey(), pair.getValue());
                                 if (debugLogging) {
                                     System.out.println(pair.getKey() + "=" + pair.getValue());
                                 }
@@ -133,72 +243,57 @@ public class Server {
                             sendMessage(putReply.build());
 
                             System.out.println();
-                            System.out.println(region.toString());
+                            dump(region);
                         } else if (Header.MessageType.GET_REQUEST == messageType) {
                             GetRequest getRequest = (GetRequest) message;
-                            Region region = null;
-                            if (regions.containsKey(getRequest.getRegion())) {
-                                region = regions.get(getRequest.getRegion());
 
-                                System.out.println();
-                                System.out.println(region.toString());
+                            System.out.println();
+                            dump(getRequest.getRegion());
 
-                                GetReply.Builder getReply = GetReply.newBuilder();
-                                for (int i = 0; i < getRequest.getKeyCount(); ++i) {
-                                    String key = getRequest.getKey(i);
-                                    if (region.containsKey(key)) {
-                                        Pair.Builder pair = Pair.newBuilder();
-                                        pair.setKey(key);
-                                        pair.setValue(region.get(key));
-                                        if (debugLogging) {
-                                            System.out.println(pair.getKey() + "=" + pair.getValue());
-                                        }
-                                        getReply.addPair(pair.build());
-                                    }
+                            GetReply.Builder getReply = GetReply.newBuilder();
+                            final String region = getRequest.getRegion();
+                            for (int i = 0; i < getRequest.getKeyCount(); ++i) {
+                                final String key = getRequest.getKey(i);
+                                Pair.Builder pair = Pair.newBuilder();
+                                pair.setKey(key);
+                                pair.setValue(get(region, key));
+                                if (debugLogging) {
+                                    System.out.println(pair.getKey() + "=" + pair.getValue());
                                 }
-
-                                sendMessage(getReply.build());
+                                getReply.addPair(pair.build());
                             }
+
+                            sendMessage(getReply.build());
                         } else if (Header.MessageType.INVALIDATE_REQUEST == messageType) {
                             InvalidateRequest invalidateRequest = (InvalidateRequest) message;
-                            Region region = null;
-                            if (regions.containsKey(invalidateRequest.getRegion())) {
-                                region = regions.get(invalidateRequest.getRegion());
 
-                                InvalidateReply.Builder invalidateReply = InvalidateReply.newBuilder();
-                                for (int i = 0; i < invalidateRequest.getKeyCount(); ++i) {
-                                    String key = invalidateRequest.getKey(i);
-                                    if (region.containsKey(key)) {
-                                        region.invalidate(key);
-                                        invalidateReply.setCount(invalidateReply.getCount() + 1);
-                                    }
-                                }
-
-                                System.out.println();
-                                System.out.println(region.toString());
-
-                                sendMessage(invalidateReply.build());
+                            InvalidateReply.Builder invalidateReply = InvalidateReply.newBuilder();
+                            final String region = invalidateRequest.getRegion();
+                            for (int i = 0; i < invalidateRequest.getKeyCount(); ++i) {
+                                String key = invalidateRequest.getKey(i);
+                                invalidate(region, key);
+                                invalidateReply.setCount(invalidateReply.getCount() + 1);
                             }
+
+                            sendMessage(invalidateReply.build());
+
+                            System.out.println();
+                            dump(region);
                         } else if (Header.MessageType.DESTROY_REQUEST == messageType) {
                             DestroyRequest destroyRequest = (DestroyRequest) message;
-                            Region region = null;
-                            if (regions.containsKey(destroyRequest.getRegion())) {
-                                region = regions.get(destroyRequest.getRegion());
 
-                                DestroyReply.Builder destroyReply = DestroyReply.newBuilder();
-                                for (int i = 0; i < destroyRequest.getKeyCount(); ++i) {
-                                    String key = destroyRequest.getKey(i);
-                                    if (region.containsKey(key)) {
-                                        region.destroy(key);
-                                        destroyReply.setCount(destroyReply.getCount() + 1);
-                                    }
-                                }
-
-                                System.out.println();
-                                System.out.println(region.toString());
-
-                                sendMessage(destroyReply.build());
+                            DestroyReply.Builder destroyReply = DestroyReply.newBuilder();
+                            final String region = destroyRequest.getRegion();
+                            for (int i = 0; i < destroyRequest.getKeyCount(); ++i) {
+                                String key = destroyRequest.getKey(i);
+                                destroy(region, key);
+                                destroyReply.setCount(destroyReply.getCount() + 1);
                             }
+
+                            sendMessage(destroyReply.build());
+
+                            System.out.println();
+                            dump(region);
                         } else {
                             System.err.println("Unhandled message type: " + messageType);
                             try {
