@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.4)
 project(protobuf)
 
+find_library(PROTOBUF_LIBRARY protobuf HINTS /usr/local)
+message(STATUS "PROTOBUF_LIBRARY=${PROTOBUF_LIBRARY}")
+
 #set(CMAKE_CONFIGURATION_TYPES Debug Release)
 set(CMAKE_CONFIGURATION_TYPES Debug)
 if (NOT CMAKE_BUILD_TYPE)
@@ -73,4 +76,5 @@ add_custom_target(generate-protobuf
   USES_TERMINAL)
 
 add_subdirectory(cpp)
+add_subdirectory(csharp)
 add_subdirectory(java)

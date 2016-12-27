@@ -2,6 +2,7 @@
 .idea/tasks.xml
 bacon/out/
 /**/*.cmake
+/**/.DS_Store
 /**/CMakeCache.txt
 /**/CMakeFiles/
 /protobuf_prototype/**/io/pivotal/message/*.java
@@ -10,6 +11,7 @@ bacon/out/
 /protobuf_prototype/**/*.exe
 /protobuf_prototype/**/*.jar
 /protobuf_prototype/**/java/build/
+/protobuf_prototype/**/cpp/build/
 /protobuf_prototype/**/csharp/bin/
 /protobuf_prototype/**/csharp/obj/
 /protobuf_prototype/**/csharp/src/packages/
