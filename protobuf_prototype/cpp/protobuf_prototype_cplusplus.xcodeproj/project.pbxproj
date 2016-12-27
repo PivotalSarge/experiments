@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BD2FF0741E12EC92001DE9F3 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2FF0731E12EC92001DE9F3 /* libprotobuf.a */; };
 		BD2FF0771E12EEAA001DE9F3 /* message.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD2FF0751E12EEAA001DE9F3 /* message.pb.cc */; };
+		BD3B94F81E1321640077118C /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD3B94F71E1321640077118C /* Main.cpp */; };
 		BD63EBB51E12E65300E97845 /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD63EBA91E12E65300E97845 /* Arguments.cpp */; };
 		BD63EBB61E12E65300E97845 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD63EBAB1E12E65300E97845 /* Client.cpp */; };
 		BD63EBB71E12E65300E97845 /* Commands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD63EBAD1E12E65300E97845 /* Commands.cpp */; };
@@ -22,6 +23,7 @@
 		BD2FF0731E12EC92001DE9F3 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = ../../../../../usr/local/Cellar/protobuf/3.1.0/lib/libprotobuf.a; sourceTree = "<group>"; };
 		BD2FF0751E12EEAA001DE9F3 /* message.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = message.pb.cc; path = src/message.pb.cc; sourceTree = "<group>"; };
 		BD2FF0761E12EEAA001DE9F3 /* message.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = message.pb.h; path = src/message.pb.h; sourceTree = "<group>"; };
+		BD3B94F71E1321640077118C /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = src/Main.cpp; sourceTree = "<group>"; };
 		BD63EB9F1E12E60300E97845 /* protobuf_prototype_cplusplus */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = protobuf_prototype_cplusplus; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD63EBA91E12E65300E97845 /* Arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arguments.cpp; path = src/Arguments.cpp; sourceTree = "<group>"; };
 		BD63EBAA1E12E65300E97845 /* Arguments.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Arguments.hpp; path = src/Arguments.hpp; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 		BD63EB961E12E60300E97845 = {
 			isa = PBXGroup;
 			children = (
+				BD3B94F71E1321640077118C /* Main.cpp */,
 				BD2FF0751E12EEAA001DE9F3 /* message.pb.cc */,
 				BD2FF0761E12EEAA001DE9F3 /* message.pb.h */,
 				BD63EBA91E12E65300E97845 /* Arguments.cpp */,
@@ -167,6 +170,7 @@
 				BD63EBB91E12E65300E97845 /* fdbuf.cpp in Sources */,
 				BD2FF0771E12EEAA001DE9F3 /* message.pb.cc in Sources */,
 				BD63EBB61E12E65300E97845 /* Client.cpp in Sources */,
+				BD3B94F81E1321640077118C /* Main.cpp in Sources */,
 				BD63EBB71E12E65300E97845 /* Commands.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

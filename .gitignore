@@ -11,6 +11,8 @@ bacon/out/
 /protobuf_prototype/**/*.jar
 /protobuf_prototype/**/java/build/
 /protobuf_prototype/**/cpp/build/
+/protobuf_prototype/**/cpp/protobuf_prototype_cplusplus.xcodeproj/project.xcworkspace/xcuserdata/
+/protobuf_prototype/**/cpp/protobuf_prototype_cplusplus.xcodeproj/xcuserdata/
 /protobuf_prototype/**/csharp/bin/
 /protobuf_prototype/**/csharp/obj/
 /protobuf_prototype/**/csharp/src/packages/
