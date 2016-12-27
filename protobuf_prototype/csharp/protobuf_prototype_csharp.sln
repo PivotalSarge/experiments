@@ -1,0 +1,25 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "protobuf_prototype_csharp", "protobuf_prototype_csharp.csproj", "{E2F42564-A68D-431D-9265-FF5FC6DF9987}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2F42564-A68D-431D-9265-FF5FC6DF9987}.Debug|x86.ActiveCfg = Debug|x86
+		{E2F42564-A68D-431D-9265-FF5FC6DF9987}.Debug|x86.Build.0 = Debug|x86
+		{E2F42564-A68D-431D-9265-FF5FC6DF9987}.Release|x86.ActiveCfg = Release|x86
+		{E2F42564-A68D-431D-9265-FF5FC6DF9987}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		BaseDirectory = src
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		outputpath = build/bin
+	EndGlobalSection
+EndGlobal

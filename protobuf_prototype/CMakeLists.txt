@@ -69,7 +69,7 @@ if(DEFINED ENV{CTEST_UNITTEST_VERBOSITY})
 endif()
 
 add_custom_target(generate-protobuf
-  COMMAND protoc message.proto --cpp_out=cpp/src --java_out=java/src
+  COMMAND protoc message.proto --cpp_out=cpp/src --java_out=java/src --csharp_out=csharp/src
   USES_TERMINAL)
 
 add_subdirectory(cpp)

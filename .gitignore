@@ -10,5 +10,9 @@ bacon/out/
 /protobuf_prototype/**/*.exe
 /protobuf_prototype/**/*.jar
 /protobuf_prototype/**/java/build/
+/protobuf_prototype/**/csharp/bin/
+/protobuf_prototype/**/csharp/obj/
+/protobuf_prototype/**/csharp/src/packages/
+/protobuf_prototype/**/csharp/**/Message.cs
 /bacon/**/*.bz2
 /bacon/**/all_actors.*
