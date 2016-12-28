@@ -13,6 +13,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "Delay.hpp"
+
 namespace {
 const bool debugLogging =
     (::getenv("DEBUG_LOGGING") && 0 == ::strcmp(::getenv("DEBUG_LOGGING"), "true"));
@@ -381,6 +383,81 @@ void Client::destroy(const std::string &region, const std::string &key)
       std::cerr << "Unable to destroy keys. :(" << std::endl;
     }
   }
+}
+
+void Client::runCommandLoop(Commands &commands)
+{
+    Delay delay;
+    while (commands) {
+        if (delay) {
+            if (debugLogging) {
+                std::cout << "Sleeping " << delay.seconds() << " seconds..." << std::endl;
+            }
+            delay();
+        }
+        
+        delay.reset();
+        if (*commands == "quit") {
+            return;
+        }
+        else if (*commands == "sleep") {
+            delay.parse(*(++commands));
+        }
+        else if (*commands == "put") {
+            const std::string region(*(++commands));
+            const std::string key(*(++commands));
+            const std::string value(*(++commands));
+            if (!region.empty() && !key.empty()) {
+                std::cout << std::endl;
+                std::cout << key << "=" << value << std::endl;
+                
+                put(region, key, value);
+                delay.randomize();
+            }
+        }
+        else if (*commands == "get") {
+            const std::string region(*(++commands));
+            const std::string key(*(++commands));
+            if (!region.empty() && !key.empty()) {
+                const std::string value(get(region, key));
+                delay.randomize();
+                
+                std::cout << std::endl;
+                std::cout << key << "=" << value << std::endl;
+            }
+        }
+        else if (*commands == "invalidate") {
+            const std::string region(*(++commands));
+            const std::string key(*(++commands));
+            if (!region.empty() && !key.empty()) {
+                invalidate(region, key);
+                delay.randomize();
+            }
+        }
+        else if (*commands == "destroy") {
+            const std::string region(*(++commands));
+            const std::string key(*(++commands));
+            if (!region.empty() && !key.empty()) {
+                destroy(region, key);
+                delay.randomize();
+            }
+        }
+        else {
+            if (*commands != "help") {
+                std::cerr << "Unknown command: " << *commands << std::endl;
+            }
+            std::cout << "Valid commands:" << std::endl;
+            std::cout << "\thelp                       -- print this help message" << std::endl;
+            std::cout << "\tquit                       -- exit" << std::endl;
+            std::cout << "\tsleep <duration>           -- wait for the duration" << std::endl;
+            std::cout << "\tget <region> <key>         -- get the value for a key" << std::endl;
+            std::cout << "\tput <region> <key> <value> -- put the value for a key" << std::endl;
+            std::cout << "\tinvalidate <region> <key>  -- invalidate the key" << std::endl;
+            std::cout << "\tdestroy <region> <key>     -- destroy the key" << std::endl;
+        }
+        
+        ++commands;
+    }
 }
 
 void Client::sendMessage(const ::google::protobuf::Message *message)
