@@ -6,8 +6,14 @@ namespace protobuf_prototype_csharp
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-			Message.PutRequest putRequest = new Message.PutRequest();
+			Console.WriteLine("Hello, world!");
+
+			Client client = new Client();
+			client.Connect();
+
+			client.Disconnect();
+
+			Console.WriteLine("Goodbye, world.");
 		}
 	}
 }

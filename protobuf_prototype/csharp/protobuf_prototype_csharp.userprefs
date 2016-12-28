@@ -1,8 +1,9 @@
 ﻿<Properties StartupConfiguration="{E2F42564-A68D-431D-9265-FF5FC6DF9987}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EmptyClass.cs">
     <Files>
       <File FileName="Program.cs" Line="10" Column="61" />
       <File FileName="Message.cs" Line="250" Column="54" />
+      <File FileName="EmptyClass.cs" Line="10" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
