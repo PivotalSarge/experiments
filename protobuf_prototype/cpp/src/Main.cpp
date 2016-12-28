@@ -13,11 +13,11 @@ int main(const int argc, const char *argv[])
 
   if (1 < argc) {
     Arguments arguments(argc, argv);
-    client.runCommandLoop(arguments);
+    arguments.runCommandLoop(client);
   }
   else {
     Shell shell;
-    client.runCommandLoop(shell);
+    shell.runCommandLoop(client);
   }
 
   client.disconnect();

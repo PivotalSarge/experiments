@@ -9,8 +9,6 @@
 #pragma clang diagnostic pop
 #endif
 
-#include "Commands.hpp"
-
 class Client {
  public:
   Client();
@@ -30,8 +28,6 @@ class Client {
   void invalidate(const std::string& region, const std::string& key);
 
   void destroy(const std::string& region, const std::string& key);
-
-    void runCommandLoop(Commands & command);
 
 private:
   int _sock;
