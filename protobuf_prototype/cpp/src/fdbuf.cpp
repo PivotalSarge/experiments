@@ -38,7 +38,7 @@ int fdbuf::sync() {
     if (0 < done) {
       std::copy(this->pbase() + done, this->pptr(), this->pbase());
       this->setp(this->pbase(), this->epptr());
-      this->pbump(size - done);
+      this->pbump((int)(size - done));
     }
   }
   return this->pptr() != this->epptr() ? 0 : -1;
@@ -49,9 +49,9 @@ int fdbuf::underflow() {
     std::streamsize pback(std::min(this->gptr() - this->eback(),
                                    std::ptrdiff_t(16 - sizeof(int))));
     std::copy(this->egptr() - pback, this->egptr(), this->eback());
-    int done(::read(this->fd_, this->eback() + pback, bufsize));
+    ssize_t done(::read(this->fd_, this->eback() + pback, bufsize));
     this->setg(this->eback(), this->eback() + pback,
-               this->eback() + pback + std::max(0, done));
+               this->eback() + pback + std::max((ssize_t)0, done));
   }
   return this->gptr() == this->egptr()
              ? traits_type::eof()

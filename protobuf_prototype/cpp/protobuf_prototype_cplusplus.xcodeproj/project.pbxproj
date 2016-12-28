@@ -269,6 +269,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LD_RUNPATH_SEARCH_PATHS = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
@@ -284,6 +285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LD_RUNPATH_SEARCH_PATHS = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;

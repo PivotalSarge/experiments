@@ -115,13 +115,10 @@ int connectSocket() {
     if (he != NULL) {
       struct sockaddr_in server;
       struct in_addr **addr_list = (struct in_addr **)he->h_addr_list;
-      for (int i = 0; addr_list[i] != NULL; i++) {
-        server.sin_addr = *addr_list[i];
-        if (debugLogging) {
-          std::cout << "localhost resolved to " << inet_ntoa(*addr_list[i])
-                    << std::endl;
-        }
-        break;
+      server.sin_addr = *addr_list[0];
+      if (debugLogging) {
+        std::cout << "localhost resolved to " << inet_ntoa(*addr_list[0])
+                  << std::endl;
       }
       server.sin_family = AF_INET;
       server.sin_port = htons(8000);
@@ -369,7 +366,7 @@ void Client::sendMessage(const ::google::protobuf::Message *message) {
     }
     message::Header header;
     header.set_messagetype(getMessageType(message));
-    header.set_messagesize(messageBuffer.length());
+    header.set_messagesize((::google::protobuf::uint32)messageBuffer.length());
     header.set_ok(true);
     if (debugLogging) {
       std::cout << "SND " << header.messagetype() << std::endl;
