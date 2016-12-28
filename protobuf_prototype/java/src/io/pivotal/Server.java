@@ -146,6 +146,13 @@ public class Server {
         }
     }
 
+    public void dump(String reg) {
+        if (regions.containsKey(reg)) {
+            final Region region = regions.get(reg);
+            System.out.println(region);
+        }
+    }
+
     private class ServerTask implements Runnable {
         private static final int PORT = 8000;
 

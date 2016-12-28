@@ -30,26 +30,30 @@ public class Shell implements Server.Listener {
                     if (command.equalsIgnoreCase("quit")) {
                         break;
                     } else if (command.equalsIgnoreCase("put")) {
-                        if (!arguments.get(1).isEmpty() && !arguments.get(2).isEmpty()) {
+                        if (!arguments.get(1).isEmpty() && 1 < arguments.size() && !arguments.get(2).isEmpty()) {
                             System.out.println();
                             System.out.println(arguments.get(2) + "=" + arguments.get(3));
 
                             server.put(arguments.get(1), arguments.get(2), arguments.get(3));
                         }
                     } else if (command.equalsIgnoreCase("get")) {
-                        if (!arguments.get(1).isEmpty() && !arguments.get(2).isEmpty()) {
+                        if (!arguments.get(1).isEmpty() && 1 < arguments.size() && !arguments.get(2).isEmpty()) {
                             final String value = server.get(arguments.get(1), arguments.get(2));
 
                             System.out.println();
                             System.out.println(arguments.get(2) + "=" + value);
                         }
                     } else if (command.equalsIgnoreCase("invalidate")) {
-                        if (!arguments.get(1).isEmpty() && !arguments.get(2).isEmpty()) {
+                        if (!arguments.get(1).isEmpty() && 1 < arguments.size() && !arguments.get(2).isEmpty()) {
                             server.invalidate(arguments.get(1), arguments.get(2));
                         }
                     } else if (command.equalsIgnoreCase("destroy")) {
-                        if (!arguments.get(1).isEmpty() && !arguments.get(2).isEmpty()) {
+                        if (!arguments.get(1).isEmpty() && 1 < arguments.size() && !arguments.get(2).isEmpty()) {
                             server.destroy(arguments.get(1), arguments.get(2));
+                        }
+                    } else if (command.equalsIgnoreCase("dump")) {
+                        if (!arguments.get(1).isEmpty()) {
+                            server.dump(arguments.get(1));
                         }
                     } else {
                         if (!command.equalsIgnoreCase("help")) {
@@ -77,10 +81,11 @@ public class Shell implements Server.Listener {
         stream.println("Valid commands:");
         stream.println("\thelp                       -- print this help message");
         stream.println("\tquit                       -- exit");
-        stream.println("\tget <region> <key>         -- get the value for a arguments.get(2)");
-        stream.println("\tput <region> <key> <value> -- put the value for a arguments.get(2)");
-        stream.println("\tinvalidate <region> <key>  -- invalidate the arguments.get(2)");
-        stream.println("\tdestroy <region> <key>     -- destroy the arguments.get(2)");
+        stream.println("\tget <region> <key>         -- get the value for a region");
+        stream.println("\tput <region> <key> <value> -- put the value for a region");
+        stream.println("\tinvalidate <region> <key>  -- invalidate the region");
+        stream.println("\tdestroy <region> <key>     -- destroy the region");
+        stream.println("\tdump <region>              -- destroy the region");
     }
 
     private List<String> splitCommandLine(String commandLine) {
