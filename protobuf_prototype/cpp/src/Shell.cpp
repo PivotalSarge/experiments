@@ -2,13 +2,11 @@
 
 #include <sstream>
 
-Shell::Shell() : _is(std::cin)
-{
+Shell::Shell() : _is(std::cin) {
   // NOP
 }
 
-Shell::operator bool()
-{
+Shell::operator bool() {
   if (!_commands.empty()) {
     return true;
   }

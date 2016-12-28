@@ -14,13 +14,12 @@
 #include <sstream>
 
 namespace {
-const bool debugLogging =
-    (::getenv("DEBUG_LOGGING") && 0 == ::strcmp(::getenv("DEBUG_LOGGING"), "true"));
+const bool debugLogging = (::getenv("DEBUG_LOGGING") &&
+                           0 == ::strcmp(::getenv("DEBUG_LOGGING"), "true"));
 
 const int headerSize = 9;
 
-void dump(const char *caption, const char *buf, const ssize_t length)
-{
+void dump(const char *caption, const char *buf, const ssize_t length) {
   if (caption) {
     std::cout << caption << ": ";
   }
@@ -37,90 +36,79 @@ void dump(const char *caption, const char *buf, const ssize_t length)
   std::cout << std::endl;
 }
 
-message::Header_MessageType getMessageType(const ::google::protobuf::Message *message)
-{
-  if (0 == ::strcmp(typeid(message::ConnectRequest).name(), typeid(*message).name())) {
+message::Header_MessageType getMessageType(
+    const ::google::protobuf::Message *message) {
+  if (0 == ::strcmp(typeid(message::ConnectRequest).name(),
+                    typeid(*message).name())) {
     return message::Header_MessageType_CONNECT_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::ConnectReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::ConnectReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_CONNECT_REPLY;
-  }
-  else if (0 == ::strcmp(typeid(message::DisconnectRequest).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::DisconnectRequest).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_DISCONNECT_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::DisconnectReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::DisconnectReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_DISCONNECT_REPLY;
-  }
-  else if (0 == ::strcmp(typeid(message::PutRequest).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::PutRequest).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_PUT_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::PutReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::PutReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_PUT_REPLY;
-  }
-  else if (0 == ::strcmp(typeid(message::GetRequest).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::GetRequest).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_GET_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::GetReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::GetReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_GET_REPLY;
-  }
-  else if (0 == ::strcmp(typeid(message::InvalidateRequest).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::InvalidateRequest).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_INVALIDATE_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::InvalidateReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::InvalidateReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_INVALIDATE_REPLY;
-  }
-  else if (0 == ::strcmp(typeid(message::DestroyRequest).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::DestroyRequest).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_DESTROY_REQUEST;
-  }
-  else if (0 == ::strcmp(typeid(message::DestroyReply).name(), typeid(*message).name())) {
+  } else if (0 == ::strcmp(typeid(message::DestroyReply).name(),
+                           typeid(*message).name())) {
     return message::Header_MessageType_DESTROY_REPLY;
   }
   return message::Header_MessageType_UNSPECIFIED_TYPE;
 }
 
-::google::protobuf::Message *getMessageBuilder(const message::Header_MessageType messageType)
-{
+::google::protobuf::Message *getMessageBuilder(
+    const message::Header_MessageType messageType) {
   if (message::Header_MessageType_CONNECT_REQUEST == messageType) {
     return new message::ConnectRequest();
-  }
-  else if (message::Header_MessageType_CONNECT_REPLY == messageType) {
+  } else if (message::Header_MessageType_CONNECT_REPLY == messageType) {
     return new message::ConnectReply();
-  }
-  else if (message::Header_MessageType_DISCONNECT_REQUEST == messageType) {
+  } else if (message::Header_MessageType_DISCONNECT_REQUEST == messageType) {
     return new message::DisconnectRequest();
-  }
-  else if (message::Header_MessageType_DISCONNECT_REPLY == messageType) {
+  } else if (message::Header_MessageType_DISCONNECT_REPLY == messageType) {
     return new message::DisconnectReply();
-  }
-  else if (message::Header_MessageType_PUT_REQUEST == messageType) {
+  } else if (message::Header_MessageType_PUT_REQUEST == messageType) {
     return new message::PutRequest();
-  }
-  else if (message::Header_MessageType_PUT_REPLY == messageType) {
+  } else if (message::Header_MessageType_PUT_REPLY == messageType) {
     return new message::PutReply();
-  }
-  else if (message::Header_MessageType_GET_REQUEST == messageType) {
+  } else if (message::Header_MessageType_GET_REQUEST == messageType) {
     return new message::GetRequest();
-  }
-  else if (message::Header_MessageType_GET_REPLY == messageType) {
+  } else if (message::Header_MessageType_GET_REPLY == messageType) {
     return new message::GetReply();
-  }
-  else if (message::Header_MessageType_INVALIDATE_REQUEST == messageType) {
+  } else if (message::Header_MessageType_INVALIDATE_REQUEST == messageType) {
     return new message::InvalidateRequest();
-  }
-  else if (message::Header_MessageType_INVALIDATE_REPLY == messageType) {
+  } else if (message::Header_MessageType_INVALIDATE_REPLY == messageType) {
     return new message::InvalidateReply();
-  }
-  else if (message::Header_MessageType_DESTROY_REQUEST == messageType) {
+  } else if (message::Header_MessageType_DESTROY_REQUEST == messageType) {
     return new message::DestroyRequest();
-  }
-  else if (message::Header_MessageType_DESTROY_REPLY == messageType) {
+  } else if (message::Header_MessageType_DESTROY_REPLY == messageType) {
     return new message::DestroyReply();
   }
   return NULL;
 }
 
-int connectSocket()
-{
+int connectSocket() {
   int sock = ::socket(AF_INET, SOCK_STREAM, 0);
   if (-1 != sock) {
     struct hostent *he = ::gethostbyname("localhost");
@@ -130,7 +118,8 @@ int connectSocket()
       for (int i = 0; addr_list[i] != NULL; i++) {
         server.sin_addr = *addr_list[i];
         if (debugLogging) {
-          std::cout << "localhost resolved to " << inet_ntoa(*addr_list[i]) << std::endl;
+          std::cout << "localhost resolved to " << inet_ntoa(*addr_list[i])
+                    << std::endl;
         }
         break;
       }
@@ -143,27 +132,23 @@ int connectSocket()
         }
         ::fcntl(sock, F_SETFL, O_NONBLOCK);
       }
-    }
-    else {
+    } else {
       sock = -1;
       std::cerr << "Unable to resolve host name. :(" << std::endl;
     }
-  }
-  else {
+  } else {
     std::cerr << "Unable to create socket. :(" << std::endl;
   }
   return sock;
 }
 
-void disconnectSocket(int sock)
-{
+void disconnectSocket(int sock) {
   if (-1 != sock) {
     ::close(sock);
   }
 }
 
-ssize_t send(int sock, const char *buf, const ssize_t n)
-{
+ssize_t send(int sock, const char *buf, const ssize_t n) {
   int flag = 0;
   ::setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int));
   const ssize_t count = ::send(sock, buf, n, MSG_DONTWAIT);
@@ -175,8 +160,7 @@ ssize_t send(int sock, const char *buf, const ssize_t n)
   return count;
 }
 
-ssize_t receive(int sock, char *buf, const ssize_t n)
-{
+ssize_t receive(int sock, char *buf, const ssize_t n) {
   ssize_t count = 0;
   /*while*/ if (count < n) {
     ::fsync(sock);
@@ -195,15 +179,12 @@ ssize_t receive(int sock, char *buf, const ssize_t n)
       if (-1 != received) {
         buf += received;
         count += received;
-      }
-      else {
+      } else {
         return received;
       }
-    }
-    else if (0 == result) {
+    } else if (0 == result) {
       std::cerr << "Timed out. :(" << std::endl;
-    }
-    else {
+    } else {
       std::cerr << "Unable to select. :(" << std::endl;
     }
   }
@@ -214,40 +195,35 @@ ssize_t receive(int sock, char *buf, const ssize_t n)
 }
 }  // namespace
 
-Client::Client() : _sock(-1), _id(-1)
-{
+Client::Client() : _sock(-1), _id(-1) {
   // NOP
 }
 
-Client::~Client()
-{
+Client::~Client() {
   disconnectSocket(_sock);
   _sock = -1;
 }
 
-bool Client::connected() const
-{
-  return -1 != _id;
-}
+bool Client::connected() const { return -1 != _id; }
 
-void Client::connect()
-{
+void Client::connect() {
   _sock = connectSocket();
   if (-1 != _sock) {
     if (debugLogging) {
       std::cout << "Got a server. :)" << std::endl;
     }
     try {
-      message::ConnectRequest *connectRequest = dynamic_cast<message::ConnectRequest *>(
-          getMessageBuilder(message::Header_MessageType_CONNECT_REQUEST));
+      message::ConnectRequest *connectRequest =
+          dynamic_cast<message::ConnectRequest *>(
+              getMessageBuilder(message::Header_MessageType_CONNECT_REQUEST));
       connectRequest->set_id(-1);  // Any non-zero number will work...
       sendMessage(connectRequest);
-      message::ConnectReply *connectReply = dynamic_cast<message::ConnectReply *>(receiveMessage());
+      message::ConnectReply *connectReply =
+          dynamic_cast<message::ConnectReply *>(receiveMessage());
       if (connectReply) {
         _id = connectReply->id();
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to connect to server. :(" << std::endl;
     }
   }
@@ -256,12 +232,12 @@ void Client::connect()
   }
 }
 
-void Client::disconnect()
-{
+void Client::disconnect() {
   if (connected()) {
     try {
-      message::DisconnectRequest *disconnectRequest = dynamic_cast<message::DisconnectRequest *>(
-          getMessageBuilder(message::Header_MessageType_DISCONNECT_REQUEST));
+      message::DisconnectRequest *disconnectRequest =
+          dynamic_cast<message::DisconnectRequest *>(getMessageBuilder(
+              message::Header_MessageType_DISCONNECT_REQUEST));
       disconnectRequest->set_id(_id);
       sendMessage(disconnectRequest);
       message::DisconnectReply *disconnectReply =
@@ -272,8 +248,7 @@ void Client::disconnect()
       if (debugLogging) {
         std::cout << "Released a server. :)" << std::endl;
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to disconnect from server. :(" << std::endl;
     }
   }
@@ -282,8 +257,8 @@ void Client::disconnect()
   _id = -1;
 }
 
-void Client::put(const std::string &region, const std::string &key, const std::string &value)
-{
+void Client::put(const std::string &region, const std::string &key,
+                 const std::string &value) {
   if (connected()) {
     try {
       message::PutRequest *putRequest = dynamic_cast<message::PutRequest *>(
@@ -293,21 +268,21 @@ void Client::put(const std::string &region, const std::string &key, const std::s
       pair->set_key(key);
       pair->set_value(value);
       sendMessage(putRequest);
-      message::PutReply *putReply = dynamic_cast<message::PutReply *>(receiveMessage());
+      message::PutReply *putReply =
+          dynamic_cast<message::PutReply *>(receiveMessage());
       if (putReply) {
         if (debugLogging) {
-          std::cout << "Put " << putReply->count() << " values. :)" << std::endl;
+          std::cout << "Put " << putReply->count() << " values. :)"
+                    << std::endl;
         }
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to put values. :(" << std::endl;
     }
   }
 }
 
-std::string Client::get(const std::string &region, const std::string &key)
-{
+std::string Client::get(const std::string &region, const std::string &key) {
   std::string value;
 
   if (connected()) {
@@ -317,10 +292,12 @@ std::string Client::get(const std::string &region, const std::string &key)
       getRequest->set_region(region);
       getRequest->add_key(key);
       sendMessage(getRequest);
-      message::GetReply *getReply = dynamic_cast<message::GetReply *>(receiveMessage());
+      message::GetReply *getReply =
+          dynamic_cast<message::GetReply *>(receiveMessage());
       if (getReply) {
         if (debugLogging) {
-          std::cout << "Got " << getReply->pair_size() << " values. :)" << std::endl;
+          std::cout << "Got " << getReply->pair_size() << " values. :)"
+                    << std::endl;
         }
         for (int i = 0; i < getReply->pair_size(); ++i) {
           if (key == getReply->pair(i).key()) {
@@ -329,8 +306,7 @@ std::string Client::get(const std::string &region, const std::string &key)
           }
         }
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to get values. :(" << std::endl;
     }
   }
@@ -338,12 +314,12 @@ std::string Client::get(const std::string &region, const std::string &key)
   return value;
 }
 
-void Client::invalidate(const std::string &region, const std::string &key)
-{
+void Client::invalidate(const std::string &region, const std::string &key) {
   if (connected()) {
     try {
-      message::InvalidateRequest *invalidateRequest = dynamic_cast<message::InvalidateRequest *>(
-          getMessageBuilder(message::Header_MessageType_INVALIDATE_REQUEST));
+      message::InvalidateRequest *invalidateRequest =
+          dynamic_cast<message::InvalidateRequest *>(getMessageBuilder(
+              message::Header_MessageType_INVALIDATE_REQUEST));
       invalidateRequest->set_region(region);
       invalidateRequest->add_key(key);
       sendMessage(invalidateRequest);
@@ -351,40 +327,40 @@ void Client::invalidate(const std::string &region, const std::string &key)
           dynamic_cast<message::InvalidateReply *>(receiveMessage());
       if (invalidateReply) {
         if (debugLogging) {
-          std::cout << "Invalidated " << invalidateReply->count() << " keys. :)" << std::endl;
+          std::cout << "Invalidated " << invalidateReply->count() << " keys. :)"
+                    << std::endl;
         }
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to invalidate keys. :(" << std::endl;
     }
   }
 }
 
-void Client::destroy(const std::string &region, const std::string &key)
-{
+void Client::destroy(const std::string &region, const std::string &key) {
   if (connected()) {
     try {
-      message::DestroyRequest *destroyRequest = dynamic_cast<message::DestroyRequest *>(
-          getMessageBuilder(message::Header_MessageType_DESTROY_REQUEST));
+      message::DestroyRequest *destroyRequest =
+          dynamic_cast<message::DestroyRequest *>(
+              getMessageBuilder(message::Header_MessageType_DESTROY_REQUEST));
       destroyRequest->set_region(region);
       destroyRequest->add_key(key);
       sendMessage(destroyRequest);
-      message::DestroyReply *destroyReply = dynamic_cast<message::DestroyReply *>(receiveMessage());
+      message::DestroyReply *destroyReply =
+          dynamic_cast<message::DestroyReply *>(receiveMessage());
       if (destroyReply) {
         if (debugLogging) {
-          std::cout << "Destroyd " << destroyReply->count() << " keys. :)" << std::endl;
+          std::cout << "Destroyd " << destroyReply->count() << " keys. :)"
+                    << std::endl;
         }
       }
-    }
-    catch (...) {
+    } catch (...) {
       std::cerr << "Unable to destroy keys. :(" << std::endl;
     }
   }
 }
 
-void Client::sendMessage(const ::google::protobuf::Message *message)
-{
+void Client::sendMessage(const ::google::protobuf::Message *message) {
   std::ostringstream messageStream;
   if (message->SerializeToOstream(&messageStream)) {
     const std::string messageBuffer(messageStream.str());
@@ -404,29 +380,26 @@ void Client::sendMessage(const ::google::protobuf::Message *message)
       if (debugLogging) {
         dump("SND[HDR]", headerBuffer.c_str(), headerBuffer.length());
       }
-      if (headerBuffer.length() == send(_sock, headerBuffer.c_str(), headerBuffer.length())) {
-        if (messageBuffer.length() == send(_sock, messageBuffer.c_str(), messageBuffer.length())) {
+      if (headerBuffer.length() ==
+          send(_sock, headerBuffer.c_str(), headerBuffer.length())) {
+        if (messageBuffer.length() ==
+            send(_sock, messageBuffer.c_str(), messageBuffer.length())) {
           // NOP
-        }
-        else {
+        } else {
           std::cerr << "Unable to send message. :(" << std::endl;
         }
-      }
-      else {
+      } else {
         std::cerr << "Unable to send header. :(" << std::endl;
       }
-    }
-    else {
+    } else {
       std::cerr << "Unable to serialize header. :(" << std::endl;
     }
-  }
-  else {
+  } else {
     std::cerr << "Unable to serialize message. :(" << std::endl;
   }
 }
 
-::google::protobuf::Message *Client::receiveMessage()
-{
+::google::protobuf::Message *Client::receiveMessage() {
   char buf[1024];
   if (headerSize == receive(_sock, buf, headerSize)) {
     if (debugLogging) {
@@ -442,26 +415,22 @@ void Client::sendMessage(const ::google::protobuf::Message *message)
         if (debugLogging) {
           dump("RCV[MSG]", buf, header.messagesize());
         }
-        ::google::protobuf::Message *message = getMessageBuilder(header.messagetype());
+        ::google::protobuf::Message *message =
+            getMessageBuilder(header.messagetype());
         std::istringstream input(std::string(buf, header.messagesize()));
         if (message->ParseFromIstream(&input)) {
           return message;
-        }
-        else {
+        } else {
           std::cerr << "Unable to deserialize message. :(" << std::endl;
         }
-      }
-      else {
+      } else {
         std::cerr << "Unable to receive message. :(" << std::endl;
       }
-    }
-    else {
+    } else {
       std::cerr << "Unable to deserialize header. :(" << std::endl;
     }
-  }
-  else {
+  } else {
     std::cerr << "Unable to receive header. :(" << std::endl;
   }
   return NULL;
 }
-

@@ -14,8 +14,8 @@ class Commands {
   virtual const std::string &operator*() const;
 
   virtual Commands &operator++();
-    
-  void runCommandLoop(Client & client);
+
+  void runCommandLoop(Client &client);
 
  protected:
   std::list<std::string> _commands;

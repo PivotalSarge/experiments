@@ -23,13 +23,14 @@ class Client {
 
   std::string get(const std::string& region, const std::string& key);
 
-  void put(const std::string& region, const std::string& key, const std::string& value);
+  void put(const std::string& region, const std::string& key,
+           const std::string& value);
 
   void invalidate(const std::string& region, const std::string& key);
 
   void destroy(const std::string& region, const std::string& key);
 
-private:
+ private:
   int _sock;
 
   int _id;

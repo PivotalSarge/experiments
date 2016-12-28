@@ -1,33 +1,24 @@
 #include "fdbuf.hpp"
 
-fdbuf::fdbuf(int fd) : fd_(-1)
-{
-  this->open(fd);
-}
+fdbuf::fdbuf(int fd) : fd_(-1) { this->open(fd); }
 
-fdbuf::~fdbuf()
-{
-  this->close();
-}
+fdbuf::~fdbuf() { this->close(); }
 
-void fdbuf::open(int fd)
-{
+void fdbuf::open(int fd) {
   this->close();
   this->fd_ = fd;
   this->setg(this->inbuf_, this->inbuf_, this->inbuf_);
   this->setp(this->outbuf_, this->outbuf_ + bufsize - 1);
 }
 
-void fdbuf::close()
-{
+void fdbuf::close() {
   if (!(this->fd_ < 0)) {
     this->sync();
     ::close(this->fd_);
   }
 }
 
-int fdbuf::overflow(int c)
-{
+int fdbuf::overflow(int c) {
   if (!traits_type::eq_int_type(c, traits_type::eof())) {
     *this->pptr() = traits_type::to_char_type(c);
     this->pbump(1);
@@ -35,8 +26,7 @@ int fdbuf::overflow(int c)
   return this->sync() == -1 ? traits_type::eof() : traits_type::not_eof(c);
 }
 
-int fdbuf::sync()
-{
+int fdbuf::sync() {
   if (this->pbase() != this->pptr()) {
     std::streamsize size(this->pptr() - this->pbase());
     std::streamsize done(::write(this->fd_, this->outbuf_, size));
@@ -54,14 +44,16 @@ int fdbuf::sync()
   return this->pptr() != this->epptr() ? 0 : -1;
 }
 
-int fdbuf::underflow()
-{
+int fdbuf::underflow() {
   if (this->gptr() == this->egptr()) {
-    std::streamsize pback(std::min(this->gptr() - this->eback(), std::ptrdiff_t(16 - sizeof(int))));
+    std::streamsize pback(std::min(this->gptr() - this->eback(),
+                                   std::ptrdiff_t(16 - sizeof(int))));
     std::copy(this->egptr() - pback, this->egptr(), this->eback());
     int done(::read(this->fd_, this->eback() + pback, bufsize));
-    this->setg(this->eback(), this->eback() + pback, this->eback() + pback + std::max(0, done));
+    this->setg(this->eback(), this->eback() + pback,
+               this->eback() + pback + std::max(0, done));
   }
-  return this->gptr() == this->egptr() ? traits_type::eof()
-                                       : traits_type::to_int_type(*this->gptr());
+  return this->gptr() == this->egptr()
+             ? traits_type::eof()
+             : traits_type::to_int_type(*this->gptr());
 }
