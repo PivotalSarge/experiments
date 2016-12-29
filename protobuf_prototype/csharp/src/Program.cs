@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace protobuf_prototype_csharp
 {
@@ -11,7 +12,9 @@ namespace protobuf_prototype_csharp
 			Client client = new Client();
 			client.Connect();
 
-			client.Disconnect();
+			Thread.Sleep(1000);
+
+			//client.Disconnect();
 
 			Console.WriteLine("Goodbye, world.");
 		}

@@ -4,11 +4,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
+using Mono;
 
 namespace protobuf_prototype_csharp
 {
 	public class Client
 	{
+		private const uint headerSize = 9;
+
 		private const uint bufferSize = 4096;
 
 		// The port number for the remote device.
@@ -16,7 +19,7 @@ namespace protobuf_prototype_csharp
 
 		private Socket socket = null;
 
-		private uint id = 0;
+		private uint id = System.UInt32.MaxValue;
 
 		public Client()
 		{
@@ -41,11 +44,11 @@ namespace protobuf_prototype_csharp
 				{
 					socket = new Socket(AddressFamily.InterNetwork,
 						SocketType.Stream, ProtocolType.Tcp);
-					//socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, 200);
+					//socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, 1);
 					//socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.NoDelay, true);
 					socket.NoDelay = true;
-					socket.SendBufferSize = 8;
-					socket.ReceiveBufferSize = 8;
+					//socket.SendBufferSize = 1;
+					//socket.ReceiveBufferSize = 1;
 
 					IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
 					IPAddress ipAddress = ipHostInfo.AddressList[0];
@@ -61,7 +64,7 @@ namespace protobuf_prototype_csharp
 			if (Connected())
 			{
 				Message.ConnectRequest connectRequest = new Message.ConnectRequest();
-				connectRequest.Id = 0;
+				connectRequest.Id = System.UInt32.MaxValue;
 				SendMessage(connectRequest);
 
 				Message.ConnectReply connectReply = (Message.ConnectReply)ReceiveMessage();
@@ -69,6 +72,7 @@ namespace protobuf_prototype_csharp
 				{
 					id = connectReply.Id;
 				}
+				//Console.WriteLine("id={0}", id);
 			}
 		}
 
@@ -221,98 +225,73 @@ namespace protobuf_prototype_csharp
 			header.MessageSize = messageSize;
 			header.Ok = true;
 
-			byte[] headerBytes = new byte[bufferSize];
+			byte[] headerBytes = new byte[headerSize];
 			Google.Protobuf.CodedOutputStream headerStream = new Google.Protobuf.CodedOutputStream(headerBytes);
 			header.WriteTo(headerStream);
-			uint headerSize = bufferSize - (uint)headerStream.SpaceLeft;
+			//uint headerSize = bufferSize - (uint)headerStream.SpaceLeft;
 
-			NetworkStream stream = new NetworkStream(socket);
-			BinaryWriter writer = new BinaryWriter(stream);
+			socket.Blocking = false;
 
 			Byte[] b = new Byte[headerSize];
 			for (int i = 0; i < headerSize; ++i)
 			{
 				b[i] = headerBytes[i];
+				//Console.WriteLine("HDR: b[{0}]={1:X}", i, headerBytes[i]); // TODO SARGE
 			}
-			writer.Write(b);
-			writer.Flush();
-
-			b = new Byte[messageSize];
-			for (int i = 0; i < messageSize; ++i)
+			if (headerSize == socket.Send(b))
 			{
-				b[i] = messageBytes[i];
-			}
-			writer.Write(b);
-			writer.Flush();
-
-			writer.Close();
-			writer.Dispose();
-			writer = null;
-
-			//if (headerSize == socket.Send(b))
-			//{
-			//	b = new Byte[messageSize];
-			//	for (int i = 0; i < messageSize; ++i)
-			//	{
-			//		b[i] = messageBytes[i];
-			//	}
-			//	if (messageSize == socket.Send(b))
-			//	{
-			//		// NOP
-			//		Console.WriteLine("Sent header and message"); // TODO SARGE
-			//	}
-			//	else
-			//	{
-			//		Console.WriteLine("Unable to send message. :(");
-			//	}
-			//}
-			//else
-			//{
-			//	Console.WriteLine("Unable to send header. :(");
-			//}
-		}
-
-		private Google.Protobuf.IMessage ReceiveMessage()
-		{
-			NetworkStream stream = new NetworkStream(socket);
-			BinaryReader reader = new BinaryReader(stream);
-
-			byte[] headerBytes = reader.ReadBytes(9);
-			if (headerBytes != null && 9 == headerBytes.Length)
-			{
-				Google.Protobuf.CodedInputStream headerStream = new Google.Protobuf.CodedInputStream(headerBytes);
-				Message.Header header = new Message.Header();
-				header.MergeFrom(headerStream);
-
-				byte[] messageBytes = reader.ReadBytes((int) header.MessageSize);
-				if (messageBytes != null && header.MessageSize == messageBytes.Length)
+				b = new Byte[messageSize];
+				for (int i = 0; i < messageSize; ++i)
 				{
-					Google.Protobuf.CodedInputStream messageStream = new Google.Protobuf.CodedInputStream(messageBytes);
-					Google.Protobuf.IMessage message = GetMessageBuilder(header.MessageType);
-					message.MergeFrom(messageStream);
-					return message;
+					b[i] = messageBytes[i];
+					//Console.WriteLine("MSG: b[{0}]={1:X}", i, messageBytes[i]); // TODO SARGE
+				}
+				if (messageSize == socket.Send(b))
+				{
+					// NOP
+				}
+				else
+				{
+					Console.WriteLine("Unable to send message. :(");
 				}
 			}
 			else
 			{
-				Console.WriteLine("Unable to receive header. :(");
+				Console.WriteLine("Unable to send header. :(");
 			}
+		}
 
-			reader.Close();
-			reader.Dispose();
-			reader = null;
+		private Google.Protobuf.IMessage ReceiveMessage()
+		{
+			socket.Blocking = true;
 
-			//Byte[] headerBytes = new Byte[9];
-			//if (9 != socket.Receive(headerBytes))
-			//{
-			//	Console.WriteLine("Received header"); // TODO SARGE
-			//										  // TODO SARGE
-			//}
-			//else
-			//{
-			//	Console.WriteLine("Unable to receive header. :(");
-			//}
-			return null;
+			uint expected = headerSize;
+			int n = 0;
+			Byte[] headerBytes = new Byte[expected];
+			while (n < expected)
+			{
+				int m = socket.Receive(headerBytes, n, (int)expected - n, SocketFlags.None);
+				//Console.WriteLine("HDR: n={0} m={1}", n, m);
+				n += m;
+			}
+			Google.Protobuf.CodedInputStream headerStream = new Google.Protobuf.CodedInputStream(headerBytes);
+			Message.Header header = new Message.Header();
+			header.MergeFrom(headerStream);
+
+			expected = header.MessageSize;
+			n = 0;
+			Byte[] messageBytes = new Byte[expected];
+			while (n < expected)
+			{
+				int m = socket.Receive(messageBytes, n, (int)expected - n, SocketFlags.None);
+				//Console.WriteLine("MSG: n={0} m={1}", n, m);
+				n += m;
+			}
+			Google.Protobuf.CodedInputStream messageStream = new Google.Protobuf.CodedInputStream(messageBytes);
+			Google.Protobuf.IMessage message = GetMessageBuilder(header.MessageType);
+			message.MergeFrom(messageStream);
+
+			return message;
 		}
 	}
 }
