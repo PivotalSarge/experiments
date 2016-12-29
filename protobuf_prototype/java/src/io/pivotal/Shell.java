@@ -79,6 +79,7 @@ public class Shell implements Server.Listener {
   private void printPrompt(PrintStream stream) {
     stream.println();
     stream.print("> ");
+    stream.flush();
   }
 
   private void printHelp(PrintStream stream) {
@@ -90,6 +91,7 @@ public class Shell implements Server.Listener {
     stream.println("\tinvalidate <region> <key>  -- invalidate the region");
     stream.println("\tdestroy <region> <key>     -- destroy the region");
     stream.println("\tdump <region>              -- destroy the region");
+    stream.flush();
   }
 
   private List<String> splitCommandLine(String commandLine) {
