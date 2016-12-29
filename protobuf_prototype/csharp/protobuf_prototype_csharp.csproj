@@ -39,6 +39,7 @@
     <Compile Include="src\Program.cs" />
     <Compile Include="src\Message.cs" />
     <Compile Include="src\Client.cs" />
+    <Compile Include="src\Shell.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

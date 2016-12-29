@@ -7,24 +7,13 @@ namespace protobuf_prototype_csharp
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello, world!");
-
 			Client client = new Client();
 			client.Connect();
 
-			Thread.Sleep(1000);
-
-			client.Put("foo", "uno", "1");
-
-			Thread.Sleep(1000);
-
-			Console.WriteLine("foo=" + client.Get("foo", "uno"));
-
-			Thread.Sleep(1000);
+			Shell shell = new Shell();
+			shell.RunCommandLoop(client);
 
 			client.Disconnect();
-
-			Console.WriteLine("Goodbye, world.");
 		}
 	}
 }
