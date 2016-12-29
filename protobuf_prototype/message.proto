@@ -26,6 +26,9 @@ message Header {
     bool ok = 3;
 }
 
+// ID must *NEVER* be zero lest it be entirely omitted,
+// even though it's fixed, from the message.
+
 message ConnectRequest {
     fixed32 id = 1;
 }
