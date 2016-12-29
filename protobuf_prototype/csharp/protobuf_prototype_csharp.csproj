@@ -40,6 +40,7 @@
     <Compile Include="src\Message.cs" />
     <Compile Include="src\Client.cs" />
     <Compile Include="src\Shell.cs" />
+    <Compile Include="src\Delay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

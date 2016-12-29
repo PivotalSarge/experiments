@@ -10,10 +10,19 @@ namespace protobuf_prototype_csharp
 
 		public void RunCommandLoop(Client client)
 		{
-			Console.Write("> ");
-			String line = Console.ReadLine();
-			while (line != null)
+			Delay delay = new Delay();
+
+			while (true)
 			{
+				if (0 < delay.Seconds)
+				{
+					delay.Execute();
+				}
+				delay.Reset();
+
+				Console.Write("> ");
+				String line = Console.ReadLine();
+
 				string[] arguments = ParseLine(line);
 				if (0 < arguments.Length)
 				{
@@ -22,6 +31,13 @@ namespace protobuf_prototype_csharp
 					{
 						return;
 					}
+					else if (command == "sleep")
+					{
+						if (1 < arguments.Length)
+						{
+							delay.Parse(arguments[1]);
+						}
+					}
 					else if (command == "put")
 					{
 						if (3 < arguments.Length)
@@ -29,7 +45,10 @@ namespace protobuf_prototype_csharp
 							string region = arguments[1];
 							string key = arguments[2];
 							string value = arguments[3];
+							Console.WriteLine("{0}={1}", key, value);
+
 							client.Put(region, key, value);
+							delay.Randomize();
 						}
 					}
 					else if (command == "get")
@@ -39,6 +58,7 @@ namespace protobuf_prototype_csharp
 							string region = arguments[1];
 							string key = arguments[2];
 							string value = client.Get(region, key);
+							delay.Randomize();
 
 							Console.WriteLine();
 							Console.WriteLine("{0}={1}", key, value);
@@ -51,6 +71,7 @@ namespace protobuf_prototype_csharp
 							string region = arguments[1];
 							string key = arguments[2];
 							client.Invalidate(region, key);
+							delay.Randomize();
 						}
 					}
 					else if (command == "destroy")
@@ -60,6 +81,7 @@ namespace protobuf_prototype_csharp
 							string region = arguments[1];
 							string key = arguments[2];
 							client.Destroy(region, key);
+							delay.Randomize();
 						}
 					}
 					else
@@ -78,9 +100,6 @@ namespace protobuf_prototype_csharp
 						Console.WriteLine("\tdestroy <region> <key>     -- destroy the key");
 					}
 				}
-
-				Console.Write("> ");
-				line = Console.ReadLine();
 			}
 		}
 

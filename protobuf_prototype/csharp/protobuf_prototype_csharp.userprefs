@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{E2F42564-A68D-431D-9265-FF5FC6DF9987}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Shell.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Delay.cs">
     <Files>
+      <File FileName="Shell.cs" Line="21" Column="5" />
+      <File FileName="Delay.cs" Line="59" Column="32" />
       <File FileName="Client.cs" Line="173" Column="12" />
       <File FileName="Message.cs" Line="1147" Column="30" />
-      <File FileName="Program.cs" Line="21" Column="57" />
-      <File FileName="Shell.cs" Line="11" Column="30" />
+      <File FileName="Program.cs" Line="2" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
