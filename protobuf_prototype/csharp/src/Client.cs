@@ -106,6 +106,81 @@ namespace protobuf_prototype_csharp
 			}
 		}
 
+		public String Get(String region, String key)
+		{
+			if (Connected())
+			{
+				Message.GetRequest getRequest = new Message.GetRequest();
+				getRequest.Region = region;
+				getRequest.Key.Add(key);
+				SendMessage(getRequest);
+
+				Message.GetReply getReply = (Message.GetReply)ReceiveMessage();
+				if (getReply != null)
+				{
+					if (0 < getReply.Pair.Count)
+					{
+						return getReply.Pair[0].Value;
+					}
+				}
+			}
+			return "";
+		}
+
+		public void Put(String region, String key, String value)
+		{
+			if (Connected())
+			{
+				Message.PutRequest putRequest = new Message.PutRequest();
+				putRequest.Region = region;
+				Message.Pair pair = new Message.Pair();
+				pair.Key = key;
+				pair.Value = value;
+				putRequest.Pair.Add(pair);
+				SendMessage(putRequest);
+
+				Message.PutReply putReply = (Message.PutReply)ReceiveMessage();
+				if (putReply != null)
+				{
+					//putReply.Count;
+				}
+			}
+		}
+
+		public void Invalidate(String region, String key)
+		{
+			if (Connected())
+			{
+				Message.InvalidateRequest invalidateRequest = new Message.InvalidateRequest();
+				invalidateRequest.Region = region;
+				invalidateRequest.Key.Add(key);
+				SendMessage(invalidateRequest);
+
+				Message.InvalidateReply invalidateReply = (Message.InvalidateReply)ReceiveMessage();
+				if (invalidateReply != null)
+				{
+					//invalidateReply.Count;
+				}
+			}
+		}
+
+		public void Destroy(String region, String key)
+		{
+			if (Connected())
+			{
+				Message.DestroyRequest destroyRequest = new Message.DestroyRequest();
+				destroyRequest.Region = region;
+				destroyRequest.Key.Add(key);
+				SendMessage(destroyRequest);
+
+				Message.DestroyReply destroyReply = (Message.DestroyReply)ReceiveMessage();
+				if (destroyReply != null)
+				{
+					//destroyReply.Count;
+				}
+			}
+		}
+
 		private Message.Header.Types.MessageType GetMessageType(Google.Protobuf.IMessage message)
 		{
 			Type t = message.GetType();

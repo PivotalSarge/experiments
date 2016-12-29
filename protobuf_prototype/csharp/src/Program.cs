@@ -14,7 +14,15 @@ namespace protobuf_prototype_csharp
 
 			Thread.Sleep(1000);
 
-			//client.Disconnect();
+			client.Put("foo", "uno", "1");
+
+			Thread.Sleep(1000);
+
+			Console.WriteLine("foo=" + client.Get("foo", "uno"));
+
+			Thread.Sleep(1000);
+
+			client.Disconnect();
 
 			Console.WriteLine("Goodbye, world.");
 		}
