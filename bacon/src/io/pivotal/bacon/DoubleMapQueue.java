@@ -411,15 +411,15 @@ public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueu
         int c = -1;
 
         E e = null;
-        final ReentrantLock putLock = this.putLock;
-        putLock.lockInterruptibly();
+        final ReentrantLock takeLock = this.takeLock;
+        takeLock.lockInterruptibly();
         try {
             try {
                 while (count.get() == 0) {
                     notEmpty.await();
                 }
             } catch (InterruptedException ie) {
-                notFull.signal();
+                notEmpty.signal();
                 throw ie;
             }
 
@@ -429,7 +429,7 @@ public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueu
                 notEmpty.signal();
             }
         } finally {
-            putLock.unlock();
+            takeLock.unlock();
         }
 
         if (c == capacity) {
