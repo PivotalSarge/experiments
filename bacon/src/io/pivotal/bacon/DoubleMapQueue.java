@@ -458,9 +458,16 @@ public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueu
     }
 
     public void clear() {
-        attributes.clear();
-        elements.clear();
-        count.set(0);
+        takeLock.lock();
+        putLock.lock();
+        try {
+            attributes.clear();
+            elements.clear();
+            count.set(0);
+        } finally {
+            putLock.unlock();
+            takeLock.unlock();
+        }
     }
 
     public boolean contains(Object o) {
@@ -512,15 +519,25 @@ public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueu
     }
 
     public <E> E[] toArray(E[] a) {
-        if (a.length < size()) {
-            a = (E[]) new Object[size()];
-        }
+        takeLock.lock();
+        putLock.lock();
+        try {
+            int size = count.get();
+            if (a.length < size) {
+                a = (E[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+            }
 
-        int i = 0;
-        for (Integer key : elements.keySet()) {
-            a[i++] = (E) elements.get(key);
+            int i = 0;
+            for (Integer key : elements.keySet()) {
+                a[i++] = (E) elements.get(key);
+            }
+            while (i < a.length) {
+                a[i++] = null;
+            }
+        } finally {
+            putLock.unlock();
+            takeLock.unlock();
         }
-
         return a;
     }
 
