@@ -1,15 +1,13 @@
 package io.pivotal.bacon.heap;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import io.pivotal.bacon.BaconPath;
+import io.pivotal.bacon.DoubleMapQueue;
 
 /**
  * Created by mdodge on 14/12/2016.
  */
 public class BaconPathQueue implements io.pivotal.bacon.BaconPathQueue {
-    LinkedBlockingQueue<BaconPath> queue = new LinkedBlockingQueue<BaconPath>();
+    DoubleMapQueue<BaconPath> queue = new DoubleMapQueue<BaconPath>();
 
     public BaconPathQueue() {
         // NOP
