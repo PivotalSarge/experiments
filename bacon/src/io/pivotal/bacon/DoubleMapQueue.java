@@ -1,5 +1,6 @@
 package io.pivotal.bacon;
 
+import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ import java.util.concurrent.locks.ReentrantLock;
   *  </tr>
   * </table>
  */
-public class DoubleMapQueue<E> implements BlockingQueue<E> {
+public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueue<E> {
     private static final String INDICES = "Indices";
 
     private final Map<String, Indices> attributes;
@@ -64,7 +65,7 @@ public class DoubleMapQueue<E> implements BlockingQueue<E> {
 
     private final ReentrantLock putLock = new ReentrantLock();
 
-    private final Condition notFull = takeLock.newCondition();
+    private final Condition notFull = putLock.newCondition();
 
     public DoubleMapQueue() {
         this(new HashMap<>(), new HashMap<>());
@@ -358,7 +359,7 @@ public class DoubleMapQueue<E> implements BlockingQueue<E> {
         return e;
     }
 
-    public void put(E e) {
+    public void put(E e) throws InterruptedException {
         if (e == null) {
             throw new NullPointerException("Null element");
         }
@@ -405,7 +406,7 @@ public class DoubleMapQueue<E> implements BlockingQueue<E> {
         return e;
     }
 
-    public E take() {
+    public E take() throws InterruptedException {
         final AtomicInteger count = this.count;
         int c = -1;
 
@@ -459,6 +460,7 @@ public class DoubleMapQueue<E> implements BlockingQueue<E> {
     public void clear() {
         attributes.clear();
         elements.clear();
+        count.set(0);
     }
 
     public boolean contains(Object o) {

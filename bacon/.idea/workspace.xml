@@ -7,7 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e9e47b3-380f-4216-b4bd-05f248b382c9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueue.java" afterPath="$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueue.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -30,14 +29,14 @@
       <file leaf-file-name="DoubleMapQueue.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueue.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1090">
-              <caret line="607" column="0" lean-forward="true" selection-start-line="607" selection-start-column="0" selection-end-line="607" selection-end-column="0" />
+            <state relative-caret-position="885">
+              <caret line="462" column="21" lean-forward="false" selection-start-line="462" selection-start-column="21" selection-end-line="462" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4961#4962#0" expanded="true" />
-                <element signature="e#5004#5005#0" expanded="true" />
-                <element signature="e#11060#11061#0" expanded="true" />
-                <element signature="e#11105#11106#0" expanded="true" />
+                <element signature="e#5018#5019#0" expanded="true" />
+                <element signature="e#5061#5062#0" expanded="true" />
+                <element signature="e#11145#11146#0" expanded="true" />
+                <element signature="e#11190#11191#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -46,13 +45,10 @@
       <file leaf-file-name="DoubleMapQueueTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueueTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1935">
-              <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+            <state relative-caret-position="164">
+              <caret line="117" column="0" lean-forward="false" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
               <folding>
-                <element signature="e#575#576#0" expanded="false" />
-                <element signature="e#627#628#0" expanded="false" />
-                <element signature="e#672#673#0" expanded="false" />
-                <element signature="e#700#701#0" expanded="false" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -97,6 +93,7 @@
       <find>get(</find>
       <find>size()</find>
       <find>SARGE</find>
+      <find>clear</find>
     </findStrings>
     <replaceStrings>
       <replace>movie</replace>
@@ -164,7 +161,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="236" />
+    <option name="x" value="446" />
     <option name="y" value="23" />
     <option name="width" value="1456" />
     <option name="height" value="1301" />
@@ -734,18 +731,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_Tests - 2016.12.21 at 16h 10m 06s.xml">
-      <configuration name="All Tests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_Tests - 2016.12.21 at 16h 10m 14s.xml">
-      <configuration name="All Tests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_Tests - 2016.12.21 at 16h 10m 33s.xml">
-      <configuration name="All Tests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_Tests - 2016.12.21 at 16h 12m 12s.xml">
-      <configuration name="All Tests" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_Tests - 2016.12.21 at 16h 12m 24s.xml">
       <configuration name="All Tests" configurationId="JUnit" />
     </history-entry>
@@ -764,9 +749,21 @@
     <history-entry file="All_Tests - 2016.12.21 at 16h 15m 58s.xml">
       <configuration name="All Tests" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="All_Tests - 2017.01.06 at 13h 28m 40s.xml">
+      <configuration name="All Tests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_Tests - 2017.01.06 at 14h 38m 49s.xml">
+      <configuration name="All Tests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_Tests - 2017.01.06 at 14h 41m 09s.xml">
+      <configuration name="All Tests" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_Tests - 2017.01.06 at 14h 42m 28s.xml">
+      <configuration name="All Tests" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="236" y="23" width="1456" height="1301" extended-state="0" />
+    <frame x="446" y="23" width="1456" height="1301" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -860,10 +857,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4961#4962#0" expanded="true" />
-            <element signature="e#5004#5005#0" expanded="true" />
-            <element signature="e#11060#11061#0" expanded="true" />
-            <element signature="e#11105#11106#0" expanded="true" />
+            <element signature="e#5018#5019#0" expanded="true" />
+            <element signature="e#5061#5062#0" expanded="true" />
+            <element signature="e#11145#11146#0" expanded="true" />
+            <element signature="e#11190#11191#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -873,10 +870,7 @@
         <state relative-caret-position="1935">
           <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
           <folding>
-            <element signature="e#575#576#0" expanded="false" />
-            <element signature="e#627#628#0" expanded="false" />
-            <element signature="e#672#673#0" expanded="false" />
-            <element signature="e#700#701#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -887,10 +881,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4961#4962#0" expanded="true" />
-            <element signature="e#5004#5005#0" expanded="true" />
-            <element signature="e#11060#11061#0" expanded="true" />
-            <element signature="e#11105#11106#0" expanded="true" />
+            <element signature="e#5018#5019#0" expanded="true" />
+            <element signature="e#5061#5062#0" expanded="true" />
+            <element signature="e#11145#11146#0" expanded="true" />
+            <element signature="e#11190#11191#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -900,10 +894,7 @@
         <state relative-caret-position="750">
           <caret line="62" column="0" lean-forward="false" selection-start-line="60" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
-            <element signature="e#575#576#0" expanded="false" />
-            <element signature="e#627#628#0" expanded="false" />
-            <element signature="e#672#673#0" expanded="false" />
-            <element signature="e#700#701#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -945,10 +936,10 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4961#4962#0" expanded="true" />
-            <element signature="e#5004#5005#0" expanded="true" />
-            <element signature="e#11060#11061#0" expanded="true" />
-            <element signature="e#11105#11106#0" expanded="true" />
+            <element signature="e#5018#5019#0" expanded="true" />
+            <element signature="e#5061#5062#0" expanded="true" />
+            <element signature="e#11145#11146#0" expanded="true" />
+            <element signature="e#11190#11191#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -958,10 +949,7 @@
         <state relative-caret-position="2445">
           <caret line="175" column="0" lean-forward="false" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
           <folding>
-            <element signature="e#575#576#0" expanded="false" />
-            <element signature="e#627#628#0" expanded="false" />
-            <element signature="e#672#673#0" expanded="false" />
-            <element signature="e#700#701#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1316,19 +1304,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueueTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1935">
-          <caret line="141" column="0" lean-forward="false" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding>
-            <element signature="e#575#576#0" expanded="false" />
-            <element signature="e#627#628#0" expanded="false" />
-            <element signature="e#672#673#0" expanded="false" />
-            <element signature="e#700#701#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/BaconPathQueue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1345,16 +1320,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueue.java">
+    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueueTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1090">
-          <caret line="607" column="0" lean-forward="true" selection-start-line="607" selection-start-column="0" selection-end-line="607" selection-end-column="0" />
+        <state relative-caret-position="164">
+          <caret line="117" column="0" lean-forward="false" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4961#4962#0" expanded="true" />
-            <element signature="e#5004#5005#0" expanded="true" />
-            <element signature="e#11060#11061#0" expanded="true" />
-            <element signature="e#11105#11106#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/pivotal/bacon/DoubleMapQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="462" column="21" lean-forward="false" selection-start-line="462" selection-start-column="21" selection-end-line="462" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5018#5019#0" expanded="true" />
+            <element signature="e#5061#5062#0" expanded="true" />
+            <element signature="e#11145#11146#0" expanded="true" />
+            <element signature="e#11190#11191#0" expanded="true" />
           </folding>
         </state>
       </provider>
