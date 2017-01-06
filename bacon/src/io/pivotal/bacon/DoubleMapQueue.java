@@ -620,7 +620,15 @@ public class DoubleMapQueue<E>  extends AbstractQueue<E> implements BlockingQueu
         }
 
         public E next() {
-            return (E) elements.get(indices.remove(0));
+            if (!attributes.isEmpty() && !elements.isEmpty() && 0 <= count.get()) {
+                takeLock.lock();
+                try {
+                    return (E) elements.get(indices.remove(0));
+                } finally {
+                    takeLock.unlock();
+                }
+            }
+            return null;
         }
     }
 }
