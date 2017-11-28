@@ -97,7 +97,6 @@ public class ArgumentInvoker {
       invoke(new LinkedList<>(Arrays.asList(args)), this);
     } else {
       invoke(new LinkedList<>(), this, getDefaultMethodName());
-
     }
   }
 }

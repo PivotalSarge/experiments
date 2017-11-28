@@ -7,12 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fea93fae-bcf8-490e-9b08-466fc2b08c12" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/invoker/invoker.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/invoker/src/ArgumentInvoker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/invoker/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/invoker/src/ArgumentInvoker.java" afterPath="$PROJECT_DIR$/invoker/src/ArgumentInvoker.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,8 +35,8 @@
       <file leaf-file-name="ArgumentInvoker.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/invoker/src/ArgumentInvoker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
-              <caret line="32" column="26" lean-forward="false" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+            <state relative-caret-position="1380">
+              <caret line="98" column="63" lean-forward="false" selection-start-line="98" selection-start-column="63" selection-end-line="98" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -672,8 +668,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/invoker/src/ArgumentInvoker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="32" column="26" lean-forward="false" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+        <state relative-caret-position="1380">
+          <caret line="98" column="63" lean-forward="false" selection-start-line="98" selection-start-column="63" selection-end-line="98" selection-end-column="63" />
           <folding />
         </state>
       </provider>
