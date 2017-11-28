@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/experiments.iml" filepath="$PROJECT_DIR$/.idea/experiments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/invoker/invoker.iml" filepath="$PROJECT_DIR$/invoker/invoker.iml" />
       <module fileurl="file://$PROJECT_DIR$/protobuf_prototype/cpp/protobuf_prototype_cplusplus.iml" filepath="$PROJECT_DIR$/protobuf_prototype/cpp/protobuf_prototype_cplusplus.iml" />
       <module fileurl="file://$PROJECT_DIR$/protobuf_prototype/java/protobuf_prototype_java.iml" filepath="$PROJECT_DIR$/protobuf_prototype/java/protobuf_prototype_java.iml" />
     </modules>

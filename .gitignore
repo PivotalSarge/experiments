@@ -1,4 +1,5 @@
 #.idea/tasks.xml
+out/
 bacon/out/
 /**/*.cmake
 /**/.DS_Store
