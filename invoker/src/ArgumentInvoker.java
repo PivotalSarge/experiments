@@ -1,27 +1,14 @@
+import java.io.BufferedReader;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class ArgumentInvoker {
-  public static void invoke(String[] args, Object object)
-      throws InvocationTargetException, IllegalAccessException, InstantiationException {
-    invoke(new LinkedList<>(Arrays.asList(args)), object);
-  }
-
-  private static void invoke(Queue<String> arguments, Object object)
-      throws IllegalAccessException, InvocationTargetException, InstantiationException {
-    while (!arguments.isEmpty()) {
-      final String name = arguments.remove();
-      invoke(arguments, object, name);
-    }
-  }
-
-  private static void invoke(Queue<String> arguments, Object object, String name)
-      throws IllegalAccessException, InvocationTargetException, InstantiationException {
+  private static void invoke(Queue<String> tokens, Object object, String name) throws Throwable {
     final Method method = findMethod(object.getClass(), name);
     if (method != null) {
       if (0 < method.getParameterCount()) {
@@ -31,42 +18,50 @@ public class ArgumentInvoker {
           // Adjust the type to box primitive types.
           if (boolean.class == type) {
             type = Boolean.class;
-          }
-          else if (byte.class == type) {
+          } else if (byte.class == type) {
             type = Byte.class;
-          }
-          else if (short.class == type) {
+          } else if (short.class == type) {
             type = Short.class;
-          }
-          else if (int.class == type) {
+          } else if (int.class == type) {
             type = Integer.class;
-          }
-          else if (long.class == type) {
+          } else if (long.class == type) {
             type = Long.class;
-          }
-          else if (float.class == type) {
+          } else if (float.class == type) {
             type = Float.class;
-          }
-          else if (double.class == type) {
+          } else if (double.class == type) {
             type = Double.class;
           }
 
-          if (!arguments.isEmpty()) {
-            final String parameter = arguments.remove();
+          if (!tokens.isEmpty()) {
+            final String parameter = tokens.remove();
             try {
               Constructor constructor = ((Class) type).getConstructor(String.class);
               parameters[index++] = constructor.newInstance(parameter);
-            } catch (NoSuchMethodException e) {
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException e) {
               e.printStackTrace(System.err);
               parameters[index++] = parameter;
+            } catch (InvocationTargetException e) {
+              throw e.getTargetException();
             }
           } else {
             parameters[index++] = null;
           }
         }
-        method.invoke(object, parameters);
+        try {
+          method.invoke(object, parameters);
+        } catch (IllegalAccessException e) {
+          e.printStackTrace(System.err);
+        } catch (InvocationTargetException e) {
+          throw e.getTargetException();
+        }
       } else {
-        method.invoke(object);
+        try {
+          method.invoke(object);
+        } catch (IllegalAccessException e) {
+          e.printStackTrace(System.err);
+        } catch (InvocationTargetException e) {
+          throw e.getTargetException();
+        }
       }
     }
   }
@@ -82,21 +77,23 @@ public class ArgumentInvoker {
     return null;
   }
 
-  protected String getDefaultMethodName() {
-    return null;
-  }
-
-  public void invoke()
-      throws InvocationTargetException, IllegalAccessException, InstantiationException {
-    invoke(new String[0]);
-  }
-
-  public void invoke(String[] args)
-      throws InvocationTargetException, IllegalAccessException, InstantiationException {
-    if (0 < args.length) {
-      invoke(new LinkedList<>(Arrays.asList(args)), this);
-    } else {
-      invoke(new LinkedList<>(), this, getDefaultMethodName());
+  protected void invoke(Reader reader, Object object)
+      throws Throwable {
+    final BufferedReader input = new BufferedReader(reader);
+    String line;
+    while (null != (line = input.readLine())) {
+      Queue<String> tokens = new LinkedList<String>();
+      String[] strings = line.split("(?<=[^\\\\])[ \t]");
+      for (String string : strings) {
+        string = string.replace("#.*", "");
+        string = string.replace("\\ ", " ");
+        string = string.replace("\\\t", "\t");
+        tokens.add(string);
+      }
+      while (!tokens.isEmpty()) {
+        final String name = tokens.remove();
+        invoke(tokens, object, name);
+      }
     }
   }
 }
