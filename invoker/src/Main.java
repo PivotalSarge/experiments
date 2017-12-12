@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 
-public class Main extends ArgumentInvoker {
+public class Main extends MethodInvoker {
   public static void main(String[] args) {
     int status = 0;
     try {
@@ -17,11 +17,14 @@ public class Main extends ArgumentInvoker {
 
   public void invoke(String[] args) throws Throwable {
     if (args.length < 1) {
-      invoke(new InputStreamReader(System.in), this);
+      invoke(new InputStreamReader(System.in), this, () -> System.out.print("> "), (str) -> {
+      });
     } else {
       final File file = new File(args[0]);
       if (file.exists() && !file.isDirectory()) {
-        invoke(new FileReader(file), this);
+        FilePrompterAndTranscriber filePrompterAndTranscriber =
+            new FilePrompterAndTranscriber(file);
+        invoke(new FileReader(file), this, filePrompterAndTranscriber, filePrompterAndTranscriber);
       } else {
         StringBuilder builder = new StringBuilder();
         for (String arg : args) {
@@ -53,5 +56,22 @@ public class Main extends ArgumentInvoker {
 
   public void just_int(int i) {
     System.out.println("just_int(" + i + ")");
+  }
+
+  private static class FilePrompterAndTranscriber implements Prompter, Transcriber {
+    private final String path;
+    private int line = 0;
+
+    private FilePrompterAndTranscriber(File file) {
+      path = file.getAbsolutePath();
+    }
+
+    public void prompt() {
+      ++line;
+    }
+
+    public void transcribe(String str) {
+      System.out.println("# File " + path + ", line " + line + ": " + str);
+    }
   }
 }
